@@ -52,9 +52,10 @@ public class HardwareOmni_1_0
         rightUp     = hwMap.dcMotor.get("motor2");
         leftDown    = hwMap.dcMotor.get("motor3");
         rightDown   = hwMap.dcMotor.get("motor4");
-        leftUp.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
+        leftUp.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightUp.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
         leftDown.setDirection(DcMotor.Direction.FORWARD);
+        rightDown.setDirection(DcMotor.Direction.FORWARD);
 
 
 
@@ -69,6 +70,8 @@ public class HardwareOmni_1_0
         leftUp.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightUp.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftDown.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightDown.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
     }
 
     /***
@@ -91,5 +94,97 @@ public class HardwareOmni_1_0
         // Reset the cycle clock for the next pass.
         period.reset();
     }
+
+    public void goForward(float power) {
+        leftUp.setPower(power);
+        leftDown.setPower(power);
+        rightUp.setPower(-power);
+        rightDown.setPower(-power);
+    }
+    public void goForward(float power, double time){ // goes forward for set time in seconds
+        ElapsedTime clock = new ElapsedTime();
+        while (clock.time() <= time) {
+            leftUp.setPower(power);
+            leftDown.setPower(power);
+            rightUp.setPower(-power);
+            rightDown.setPower(-power);
+        }
+    }
+    public void goLeft(float power) {
+        leftUp.setPower(-power);
+        leftDown.setPower(power);
+        rightUp.setPower(-power);
+        rightDown.setPower(power);
+    }
+    public void goLeft(float power, double time){ // goes forward for set time in seconds
+        ElapsedTime clock = new ElapsedTime();
+        while (clock.time() <= time) {
+            leftUp.setPower(-power);
+            leftDown.setPower(power);
+            rightUp.setPower(-power);
+            rightDown.setPower(power);
+        }
+    }
+    public void goRight(float power) {
+    leftUp.setPower(power);
+    leftDown.setPower(-power);
+    rightUp.setPower(power);
+    rightDown.setPower(-power);
+}
+    public void goRight(float power, double time){ // goes forward for set time in seconds
+        ElapsedTime clock = new ElapsedTime();
+        while (clock.time() <= time) {
+            leftUp.setPower(power);
+            leftDown.setPower(-power);
+            rightUp.setPower(power);
+            rightDown.setPower(-power);
+        }
+    }
+    public void goBackward(float power) {
+        leftUp.setPower(-power);
+        leftDown.setPower(-power);
+        rightUp.setPower(power);
+        rightDown.setPower(power);
+    }
+    public void goBackward(float power, double time){ // goes forward for set time in seconds
+        ElapsedTime clock = new ElapsedTime();
+        while (clock.time() <= time) {
+            leftUp.setPower(-power);
+            leftDown.setPower(-power);
+            rightUp.setPower(power);
+            rightDown.setPower(power);
+        }
+    }
+    public void spinRight(float power) {
+        leftUp.setPower(power);
+        leftDown.setPower(power);
+        rightUp.setPower(power);
+        rightDown.setPower(power);
+    }
+    public void spinRight(float power, double time){ // goes forward for set time in seconds
+        ElapsedTime clock = new ElapsedTime();
+        while (clock.time() <= time) {
+            leftUp.setPower(power);
+            leftDown.setPower(power);
+            rightUp.setPower(power);
+            rightDown.setPower(power);
+        }
+    }
+    public void spinLeft(float power) {
+        leftUp.setPower(power);
+        leftDown.setPower(power);
+        rightUp.setPower(power);
+        rightDown.setPower(power);
+    }
+    public void spinLeft(float power, double time){ // goes forward for set time in seconds
+        ElapsedTime clock = new ElapsedTime();
+        while (clock.time() <= time) {
+            leftUp.setPower(power);
+            leftDown.setPower(power);
+            rightUp.setPower(power);
+            rightDown.setPower(power);
+        }
+    }
+
 }
 
