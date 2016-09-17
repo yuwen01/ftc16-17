@@ -32,6 +32,8 @@ public class HardwareOmni_1_0
     public DcMotor  leftDown    = null;
     public DcMotor  rightDown = null;
 
+    public float TELEPOWER = 0.5f;
+
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -184,6 +186,13 @@ public class HardwareOmni_1_0
             rightUp.setPower(power);
             rightDown.setPower(power);
         }
+    }
+    public void stopDrive() {
+        leftUp.setPower(0);
+        leftDown.setPower(0);
+        rightUp.setPower(0);
+        rightDown.setPower(0);
+
     }
 
 }
