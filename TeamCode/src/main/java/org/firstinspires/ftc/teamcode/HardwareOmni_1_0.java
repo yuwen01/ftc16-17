@@ -54,10 +54,10 @@ public class HardwareOmni_1_0
         rightUp     = hwMap.dcMotor.get("motor2");
         leftDown    = hwMap.dcMotor.get("motor3");
         rightDown   = hwMap.dcMotor.get("motor4");
-        leftUp.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        rightUp.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
-        leftDown.setDirection(DcMotor.Direction.FORWARD);
-        rightDown.setDirection(DcMotor.Direction.FORWARD);
+        leftUp.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
+        rightUp.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        leftDown.setDirection(DcMotor.Direction.REVERSE);
+        rightDown.setDirection(DcMotor.Direction.REVERSE);
 
 
 

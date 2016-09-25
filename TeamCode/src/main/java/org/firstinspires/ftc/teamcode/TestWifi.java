@@ -32,12 +32,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.Range;
-
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 /**
  * This file provides basic Telop driving for a Pushbot robot.
@@ -52,13 +48,10 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Teleop Tank", group="Teleop")
+@TeleOp(name="Wifi Test", group="Test")
 //@Disabled
-public class Teleop1_0 extends OpMode{
+public class TestWifi extends OpMode{
 
-    /* Declare OpMode members. */
-    HardwareOmni_1_0 robot       = new HardwareOmni_1_0(); // use the class created to define a Pushbot's hardware
-                                                         // could also use HardwarePushbotMatrix class
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -68,10 +61,9 @@ public class Teleop1_0 extends OpMode{
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
-        robot.init(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Ready to Rumble");    //
+        telemetry.addData("Say", "Hello Driver");    //
         updateTelemetry(telemetry);
     }
 
@@ -99,27 +91,27 @@ public class Teleop1_0 extends OpMode{
             telemetry.addData("Movement: ", "Forward");
         }
         else if (gamepad1.dpad_down) {
-            robot.goBackward(robot.TELEPOWER);
+
             telemetry.addData("Movement: ", "Backward");
         }
         else if (gamepad1.dpad_right) {
-            robot.goRight(robot.TELEPOWER);
+
             telemetry.addData("Movement: ", "Right");
         }
         else if (gamepad1.dpad_left) {
-            robot.goLeft(robot.TELEPOWER);
+
             telemetry.addData("Movement: ", "Left");
         }
         else if (gamepad1.left_bumper) {
-            robot.spinLeft(robot.TELEPOWER);
+
             telemetry.addData("Movement: ", "CCL");
         }
         else if (gamepad1.right_bumper) {
-            robot.spinRight(robot.TELEPOWER);
+
             telemetry.addData("Movement: ", "CC");
         }
         else{
-            robot.stopDrive();
+
             telemetry.addData("Movement: ", "Stop");
         }
 
