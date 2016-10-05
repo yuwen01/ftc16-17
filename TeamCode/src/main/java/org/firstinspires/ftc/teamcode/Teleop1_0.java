@@ -52,7 +52,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Teleop Tank", group="Teleop")
+@TeleOp(name="Teleop1_0", group="Teleop")
 //@Disabled
 public class Teleop1_0 extends OpMode{
 
@@ -95,7 +95,7 @@ public class Teleop1_0 extends OpMode{
     @Override
     public void loop() {
         if (gamepad1.dpad_up) {
-            //robot.goForward(robot.TELEPOWER);
+            robot.goForward(robot.TELEPOWER);
             telemetry.addData("Movement: ", "Forward");
         }
         else if (gamepad1.dpad_down) {
