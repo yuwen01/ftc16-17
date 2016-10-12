@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -23,16 +22,18 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Motor channel:  Manipulator drive motor:  "left_arm"
  * Servo channel:  Servo to open left claw:  "left_hand"
  * Servo channel:  Servo to open right claw: "right_hand"
+ *
+ * also the power module is on the back
  */
 public class HardwareOmni_1_0
 {
     /* Public OpMode members. */
-    public DcMotor  leftUp  = null;
-    public DcMotor  rightUp  = null;
-    public DcMotor  leftDown    = null;
-    public DcMotor  rightDown = null;
+    public DcMotor lFront = null;
+    public DcMotor rFront = null;
+    public DcMotor lBack = null;
+    public DcMotor rBack = null;
 
-    public float TELEPOWER = 0.5f;
+    public float TELEPOWER = 0.2f;
 
 
     /* local OpMode members. */
@@ -50,29 +51,43 @@ public class HardwareOmni_1_0
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        leftUp      = hwMap.dcMotor.get("motor1");
-        rightUp     = hwMap.dcMotor.get("motor2");
-        leftDown    = hwMap.dcMotor.get("motor3");
-        rightDown   = hwMap.dcMotor.get("motor4");
-        leftUp.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
-        rightUp.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-        leftDown.setDirection(DcMotor.Direction.REVERSE);
-        rightDown.setDirection(DcMotor.Direction.REVERSE);
+        lFront = hwMap.dcMotor.get("motor1");   //Left Front
+        rFront = hwMap.dcMotor.get("motor2");   //Right Front
+        lBack = hwMap.dcMotor.get("motor3");    //Left Back
+        rBack = hwMap.dcMotor.get("motor4");    //Right Back
 
+        DcMotor[] driveMotors = {lFront, rFront, lBack, rBack};
 
-
-        // Set all motors to zero power
-        leftUp.setPower(0);
-        rightUp.setPower(0);
-        leftDown.setPower(0);
-        rightDown.setPower(0);
-
-        // Set all motors to run without encoders.
+        //Correct motor direction, set all motors to zero power, set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
-        leftUp.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightUp.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        leftDown.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightDown.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        for(DcMotor motor : driveMotors){
+            motor.setDirection(DcMotor.Direction.REVERSE);
+            motor.setPower(0);
+            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+
+        rFront.setDirection(DcMotor.Direction.FORWARD); // Needs to be forward
+//
+//
+//        lFront.setDirection(DcMotor.Direction.REVERSE);
+//        rFront.setDirection(DcMotor.Direction.REVERSE);
+//        lBack.setDirection(DcMotor.Direction.REVERSE);
+//        rBack.setDirection(DcMotor.Direction.REVERSE);
+//
+//
+//        // Set all motors to zero power
+//        lFront.setPower(0);
+//        rFront.setPower(0);
+//        lBack.setPower(0);
+//        rBack.setPower(0);
+//
+//        // Set all motors to run without encoders.
+//        // May want to use RUN_USING_ENCODERS if encoders are installed.
+//        lFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        rFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        lBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        rBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
 
     }
 
@@ -97,101 +112,101 @@ public class HardwareOmni_1_0
         period.reset();
     }
 
-    public void goForward(float power) {
-        leftUp.setPower(power);
-        leftDown.setPower(power);
-        rightUp.setPower(-power);
-        rightDown.setPower(-power);
+    public void spinRight(float power) {
+        lFront.setPower(power);
+        lBack.setPower(power);
+        rFront.setPower(-power);
+        rBack.setPower(-power);
     }
-    public void goForward(float power, double time){ // goes forward for set time in seconds
+    public void spinRight(float power, double time){
         ElapsedTime clock = new ElapsedTime();
         while (clock.time() <= time) {
-            leftUp.setPower(power);
-            leftDown.setPower(power);
-            rightUp.setPower(-power);
-            rightDown.setPower(-power);
+            lFront.setPower(power);
+            lBack.setPower(power);
+            rFront.setPower(-power);
+            rBack.setPower(-power);
         }
     }
     public void goLeft(float power) {
-        leftUp.setPower(-power);
-        leftDown.setPower(power);
-        rightUp.setPower(-power);
-        rightDown.setPower(power);
+        lFront.setPower(-power);
+        lBack.setPower(power);
+        rFront.setPower(-power);
+        rBack.setPower(power);
     }
-    public void goLeft(float power, double time){ // goes forward for set time in seconds
+    public void goLeft(float power, double time){
         ElapsedTime clock = new ElapsedTime();
         while (clock.time() <= time) {
-            leftUp.setPower(-power);
-            leftDown.setPower(power);
-            rightUp.setPower(-power);
-            rightDown.setPower(power);
+            lFront.setPower(-power);
+            lBack.setPower(power);
+            rFront.setPower(-power);
+            rBack.setPower(power);
         }
     }
     public void goRight(float power) {
-    leftUp.setPower(power);
-    leftDown.setPower(-power);
-    rightUp.setPower(power);
-    rightDown.setPower(-power);
-}
-    public void goRight(float power, double time){ // goes forward for set time in seconds
+        lFront.setPower(power);
+        lBack.setPower(-power);
+        rFront.setPower(power);
+        rBack.setPower(-power);
+    }
+    public void goRight(float power, double time){
         ElapsedTime clock = new ElapsedTime();
         while (clock.time() <= time) {
-            leftUp.setPower(power);
-            leftDown.setPower(-power);
-            rightUp.setPower(power);
-            rightDown.setPower(-power);
-        }
-    }
-    public void goBackward(float power) {
-        leftUp.setPower(-power);
-        leftDown.setPower(-power);
-        rightUp.setPower(power);
-        rightDown.setPower(power);
-    }
-    public void goBackward(float power, double time){ // goes forward for set time in seconds
-        ElapsedTime clock = new ElapsedTime();
-        while (clock.time() <= time) {
-            leftUp.setPower(-power);
-            leftDown.setPower(-power);
-            rightUp.setPower(power);
-            rightDown.setPower(power);
-        }
-    }
-    public void spinRight(float power) {
-        leftUp.setPower(power);
-        leftDown.setPower(power);
-        rightUp.setPower(power);
-        rightDown.setPower(power);
-    }
-    public void spinRight(float power, double time){ // goes forward for set time in seconds
-        ElapsedTime clock = new ElapsedTime();
-        while (clock.time() <= time) {
-            leftUp.setPower(power);
-            leftDown.setPower(power);
-            rightUp.setPower(power);
-            rightDown.setPower(power);
+            lFront.setPower(power);
+            lBack.setPower(-power);
+            rFront.setPower(power);
+            rBack.setPower(-power);
         }
     }
     public void spinLeft(float power) {
-        leftUp.setPower(power);
-        leftDown.setPower(power);
-        rightUp.setPower(power);
-        rightDown.setPower(power);
+        lFront.setPower(-power);
+        lBack.setPower(-power);
+        rFront.setPower(power);
+        rBack.setPower(power);
     }
     public void spinLeft(float power, double time){ // goes forward for set time in seconds
         ElapsedTime clock = new ElapsedTime();
         while (clock.time() <= time) {
-            leftUp.setPower(power);
-            leftDown.setPower(power);
-            rightUp.setPower(power);
-            rightDown.setPower(power);
+            lFront.setPower(-power);
+            lBack.setPower(-power);
+            rFront.setPower(power);
+            rBack.setPower(power);
+        }
+    }
+    public void goForward(float power) {
+        lFront.setPower(power);
+        lBack.setPower(power);
+        rFront.setPower(power);
+        rBack.setPower(power);
+    }
+    public void goForward(float power, double time){ // goes forward for set time in seconds
+        ElapsedTime clock = new ElapsedTime();
+        while (clock.time() <= time) {
+            lFront.setPower(power);
+            lBack.setPower(power);
+            rFront.setPower(power);
+            rBack.setPower(power);
+        }
+    }
+    public void goBackward(float power) {
+        lFront.setPower(-power);
+        lBack.setPower(-power);
+        rFront.setPower(-power);
+        rBack.setPower(-power);
+    }
+    public void goBackward(float power, double time){ // goes forward for set time in seconds
+        ElapsedTime clock = new ElapsedTime();
+        while (clock.time() <= time) {
+            lFront.setPower(-power);
+            lBack.setPower(-power);
+            rFront.setPower(-power);
+            rBack.setPower(-power);
         }
     }
     public void stopDrive() {
-        leftUp.setPower(0);
-        leftDown.setPower(0);
-        rightUp.setPower(0);
-        rightDown.setPower(0);
+        lFront.setPower(0);
+        lBack.setPower(0);
+        rFront.setPower(0);
+        rBack.setPower(0);
 
     }
 
