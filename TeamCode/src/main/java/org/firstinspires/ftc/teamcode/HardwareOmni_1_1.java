@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.LightSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -25,7 +25,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  * also the power module is on the back
  */
-public class HardwareOmni_1_0
+public class HardwareOmni_1_1
 {
     /* Public OpMode members. */
     public DcMotor lFront = null;
@@ -33,8 +33,10 @@ public class HardwareOmni_1_0
     public DcMotor lBack = null;
     public DcMotor rBack = null;
 
-    public final double TELEPOWER = 0.6;
-    public final double AUTOPOWER = 0.3;
+    public LightSensor eye = null;
+
+    public final double TELEPOWER = 0.2;
+    public final double AUTOPOWER = 0.5;
 
 
     /* local OpMode members. */
@@ -42,7 +44,7 @@ public class HardwareOmni_1_0
     private ElapsedTime period  = new ElapsedTime();
 
     /* Constructor */
-    public HardwareOmni_1_0(){
+    public HardwareOmni_1_1(){
 
     }
 
@@ -55,7 +57,9 @@ public class HardwareOmni_1_0
         lFront = hwMap.dcMotor.get("motor1");   //Left Front
         rFront = hwMap.dcMotor.get("motor2");   //Right Front
         lBack = hwMap.dcMotor.get("motor3");    //Left Back
-        rBack = hwMap.dcMotor.get("motor4");    //Right Back
+        rBack = hwMap.dcMotor.get("motor4");    //Right
+
+        eye = hwMap.lightSensor.get("eye");
 
         DcMotor[] driveMotors = {lFront, rFront, lBack, rBack};
 
@@ -68,6 +72,8 @@ public class HardwareOmni_1_0
         }
 
         rFront.setDirection(DcMotor.Direction.FORWARD); // Needs to be forward
+
+        eye.enableLed(true);//TODO bruh which is more consistent
 //
 //
 //        lFront.setDirection(DcMotor.Direction.REVERSE);
