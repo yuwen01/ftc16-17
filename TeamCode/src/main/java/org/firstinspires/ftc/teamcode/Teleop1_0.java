@@ -53,11 +53,11 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  */
 
 @TeleOp(name="Teleop1_0", group="Teleop")
-//@Disabled
+@Disabled
 public class Teleop1_0 extends OpMode{
 
     /* Declare OpMode members. */
-    HardwareOmni_1_0 robot       = new HardwareOmni_1_0(); // use the class created to define a Pushbot's hardware
+    HardwareOmni_1_1 robot       = new HardwareOmni_1_1(); // use the class created to define a Pushbot's hardware
                                                          // could also use HardwarePushbotMatrix class
 
     /*
@@ -72,7 +72,7 @@ public class Teleop1_0 extends OpMode{
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Ready to Rumble");    //
-        updateTelemetry(telemetry);
+        telemetry.update();
     }
 
     /*
@@ -94,35 +94,44 @@ public class Teleop1_0 extends OpMode{
      */
     @Override
     public void loop() {
-        if (gamepad1.dpad_up) {
+        if (gamepad1.dpad_up) { // when up on dpad is pressed, go forward
             robot.goForward(robot.TELEPOWER);
             telemetry.addData("Movement: ", "Forward");
         }
-        else if (gamepad1.dpad_down) {
+        else if (gamepad1.dpad_down) { //when down on dpad is pressed, go backward
             robot.goBackward(robot.TELEPOWER);
             telemetry.addData("Movement: ", "Backward");
         }
-        else if (gamepad1.dpad_right) {
+        else if (gamepad1.dpad_right) { // when right on dpad is pressed, go right
             robot.goRight(robot.TELEPOWER);
             telemetry.addData("Movement: ", "Right");
         }
-        else if (gamepad1.dpad_left) {
+        else if (gamepad1.dpad_left) { // when left on dpad is pressed, go left
             robot.goLeft(robot.TELEPOWER);
             telemetry.addData("Movement: ", "Left");
         }
-        else if (gamepad1.left_bumper) {
+        else if (gamepad1.left_bumper) { // when lbumper on dpad is pressed, spin left
             robot.spinLeft(robot.TELEPOWER);
             telemetry.addData("Movement: ", "CCL");
         }
-        else if (gamepad1.right_bumper) {
+        else if (gamepad1.right_bumper) { // when rbumper on dpad is pressed, spin right
             robot.spinRight(robot.TELEPOWER);
             telemetry.addData("Movement: ", "CC");
         }
-        else{
+        else{ //otherwise stop moving around!
             robot.stopDrive();
             telemetry.addData("Movement: ", "Stop");
         }
-
+        if (gamepad2.a) // if a, then turn on the launchy thing
+            robot.launch.setPower(0.4);
+        else
+            robot.launch.setPower(0.0); //otherwise, stop launch thing
+        if  (gamepad2.x)
+            robot.lift.setPower(0.2);
+        else if (gamepad2.y)
+            robot.lift.setPower(-0.2);
+        else
+            robot.lift.setPower(0.0);
 
         // Send telemetry message to signify robot running;
 
@@ -134,6 +143,7 @@ public class Teleop1_0 extends OpMode{
      */
     @Override
     public void stop() {
+        //robot.eye.close();
     }
 
 }

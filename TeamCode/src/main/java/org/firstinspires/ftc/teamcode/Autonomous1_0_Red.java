@@ -56,11 +56,12 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Autonomous1_0_Red extends LinearOpMode {
 
     /* Declare OpMode members. */
-    private ElapsedTime runtime = new ElapsedTime();
     // DcMotor leftMotor = null;
     // DcMotor rightMotor = null;
-    HardwareOmni_1_0 robot = new HardwareOmni_1_0();
-    private final double TIME1 = 2.0;
+    HardwareOmni_1_1 robot = new HardwareOmni_1_1();
+    private final long TIME1 = 2000;
+    private final long TIME2 = 500;
+
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
@@ -72,21 +73,35 @@ public class Autonomous1_0_Red extends LinearOpMode {
          */
         robot.init(hardwareMap);
         waitForStart();
-        runtime.reset();
-
         // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
+        telemetry.addData("Status", "Run Time: " + 0.000);
+        telemetry.update();
 
-            telemetry.update();
+        //Step 1: Move forward to get into range for launch
+        robot.lFront.setPower(0.5);
+        robot.lBack.setPower(0.5);
+        robot.rFront.setPower(0.5);
+        robot.rBack.setPower(0.5);
 
-            robot.goForward(robot.AUTOPOWER);
+        telemetry.addData("dude", "stairs");
+        telemetry.update();
 
-            // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
-            // leftMotor.setPower(-gamepad1.left_stick_y);
-            // rightMotor.setPower(-gamepad1.right_stick_y);
+        robot.waitForTick(TIME1);
+        //Step 2: Launch for 10 seconds
+        robot.launch.setPower(0.4);
+        robot.waitForTick(10000);
+        robot.stopSpecial();
 
-            idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
-        }
+        // Step 3:  Go forward a little more to push out cap ball
+        robot.goForward(TIME2);
+
+        // Step 4:  Stop moving
+        robot.stopDrive();
+
+        telemetry.addData("Path", "Complete");
+        telemetry.update();
+        sleep(1000);
+        idle();
+
     }
 }

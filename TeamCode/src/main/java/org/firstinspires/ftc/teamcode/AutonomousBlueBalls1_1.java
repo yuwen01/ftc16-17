@@ -49,7 +49,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Autonomous_Red", group="Autonomous")  // @Autonomous(...) is the other common choice
+@Autonomous(name="AutonomousBlueBalls11", group="Autonomous")  // @Autonomous(...) is the other common choice
 //@Disabled
 public class AutonomousBlueBalls1_1 extends LinearOpMode {
 
@@ -81,14 +81,15 @@ public class AutonomousBlueBalls1_1 extends LinearOpMode {
 
             telemetry.update();
             robot.goForward(robot.AUTOPOWER);
-            while (robot.eye.getLightDetected() < WHITE){
-                telemetry.addData("Light", robot.eye.getLightDetected());
-                telemetry.update();
-            }
+//            while (robot.eye.getLightDetected() < WHITE){
+//                telemetry.addData("Light", robot.eye.getLightDetected());
+//                telemetry.update();
+//            }
 
             robot.stopDrive();
 
             robot.goRight(robot.AUTOPOWER, TIME1);
+
 
 
             // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)

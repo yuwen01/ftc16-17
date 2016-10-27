@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.LightSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -28,14 +29,17 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class HardwareOmni_1_1
 {
     /* Public OpMode members. */
-    public DcMotor lFront = null;
-    public DcMotor rFront = null;
-    public DcMotor lBack = null;
-    public DcMotor rBack = null;
+    public DcMotor lFront = null;   // lf   rf
+    public DcMotor rFront = null;   //
+    public DcMotor lBack = null;    // lb   rb
+    public DcMotor rBack = null;    //
 
-    public LightSensor eye = null;
+    public DcMotor lift = null;
+    public DcMotor launch = null;
 
-    public final double TELEPOWER = 0.2;
+    //public LightSensor eye = null;
+
+    public double TELEPOWER = 0.5;
     public final double AUTOPOWER = 0.5;
 
 
@@ -59,7 +63,10 @@ public class HardwareOmni_1_1
         lBack = hwMap.dcMotor.get("motor3");    //Left Back
         rBack = hwMap.dcMotor.get("motor4");    //Right
 
-        eye = hwMap.lightSensor.get("eye");
+        lift = hwMap.dcMotor.get("lift");
+        launch = hwMap.dcMotor.get("launch");
+
+        //eye = hwMap.lightSensor.get("eye");
 
         DcMotor[] driveMotors = {lFront, rFront, lBack, rBack};
 
@@ -73,28 +80,13 @@ public class HardwareOmni_1_1
 
         rFront.setDirection(DcMotor.Direction.FORWARD); // Needs to be forward
 
-        eye.enableLed(true);//TODO bruh which is more consistent
-//
-//
-//        lFront.setDirection(DcMotor.Direction.REVERSE);
-//        rFront.setDirection(DcMotor.Direction.REVERSE);
-//        lBack.setDirection(DcMotor.Direction.REVERSE);
-//        rBack.setDirection(DcMotor.Direction.REVERSE);
-//
-//
-//        // Set all motors to zero power
-//        lFront.setPower(0);
-//        rFront.setPower(0);
-//        lBack.setPower(0);
-//        rBack.setPower(0);
-//
-//        // Set all motors to run without encoders.
-//        // May want to use RUN_USING_ENCODERS if encoders are installed.
-//        lFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        rFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        lBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        rBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//
+        lift.setDirection(DcMotor.Direction.FORWARD);
+        launch.setDirection(DcMotor.Direction.REVERSE);
+
+        lift.setPower(0);
+        launch.setPower(0);
+
+        //eye.enableLed(true);//TODO bruh which is more consistent
 
     }
 
@@ -220,6 +212,13 @@ public class HardwareOmni_1_1
             rBack.setPower(-power);
         }
         this.stopDrive();
+    }
+    public void stopSpecial(){
+        launch.setPower(0.0);
+        lift.setPower(0.0);
+    }
+    public void goNorthEast() {
+
     }
 
 

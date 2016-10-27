@@ -68,27 +68,7 @@ public class HardwareOmni_1_0
         }
 
         rFront.setDirection(DcMotor.Direction.FORWARD); // Needs to be forward
-//
-//
-//        lFront.setDirection(DcMotor.Direction.REVERSE);
-//        rFront.setDirection(DcMotor.Direction.REVERSE);
-//        lBack.setDirection(DcMotor.Direction.REVERSE);
-//        rBack.setDirection(DcMotor.Direction.REVERSE);
-//
-//
-//        // Set all motors to zero power
-//        lFront.setPower(0);
-//        rFront.setPower(0);
-//        lBack.setPower(0);
-//        rBack.setPower(0);
-//
-//        // Set all motors to run without encoders.
-//        // May want to use RUN_USING_ENCODERS if encoders are installed.
-//        lFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        rFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        lBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        rBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//
+
 
     }
 
