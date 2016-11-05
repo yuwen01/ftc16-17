@@ -48,7 +48,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class Teleop2_2 extends OpMode{
 
     /* Declare OpMode members. */
-    HardwareMech_2_0 shrek       = new HardwareMech_2_0(); // use the hardware file bc it's radical
+    HardwareMech_2_0 robot = new HardwareMech_2_0(); // use the hardware file bc it's radical
                                                          // could also use HardwarePushbotMatrix clas
     /*
      * Code to run ONCE when the driver hits INIT
@@ -58,9 +58,9 @@ public class Teleop2_2 extends OpMode{
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
-        shrek.init(hardwareMap);
+        robot.init(hardwareMap);
 
-        // Send telemetry message to signify shrek waiting;
+        // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Ready to Rumble");    //
         telemetry.update();
     }
@@ -96,22 +96,22 @@ public class Teleop2_2 extends OpMode{
         double right = -gamepad1.right_stick_y;
         telemetry.addLine("left: " + left + "\nright: " + right);
 
-        shrek.lBack.setPower(left);
-        shrek.lFront.setPower(left);
-        shrek.rBack.setPower(right);
-        shrek.rFront.setPower(right);
-        if (gamepad2.a) // if a, then turn on the launchy thing
-            shrek.launch.setPower(0.4);
-        else
-            shrek.launch.setPower(0.0); //otherwise, stop launch thing
-        if  (gamepad2.x)
-            shrek.lift.setPower(0.2);
-        else if (gamepad2.y)
-            shrek.lift.setPower(-0.2);
-        else
-            shrek.lift.setPower(0.0);
+        robot.lBack.setPower(left);
+        robot.lFront.setPower(left);
+        robot.rBack.setPower(right);
+        robot.rFront.setPower(right);
+//        if (gamepad2.a) // if a, then turn on the launchy thing
+//            robot.launch.setPower(0.4);
+//        else
+//            robot.launch.setPower(0.0); //otherwise, stop launch thing
+//        if  (gamepad2.x)
+//            robot.lift.setPower(0.2);
+//        else if (gamepad2.y)
+//            robot.lift.setPower(-0.2);
+//        else
+//            robot.lift.setPower(0.0);
 
-        // Send telemetry message to signify shrek running;
+        // Send telemetry message to signify robot running;
 
         updateTelemetry(telemetry);
     }
@@ -121,7 +121,7 @@ public class Teleop2_2 extends OpMode{
      */
     @Override
     public void stop() {
-        //shrek.eye.close();
+        //robot.eye.close();
     }
 
 }

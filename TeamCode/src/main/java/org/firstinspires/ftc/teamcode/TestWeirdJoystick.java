@@ -42,7 +42,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  */
 
 @TeleOp(name="WeirdJoystickDyingSoon", group="Teleop")
-@Disabled
+//@Disabled
 public class TestWeirdJoystick extends OpMode{
 
     /* Declare OpMode members. */
@@ -54,7 +54,7 @@ public class TestWeirdJoystick extends OpMode{
     @Override
     public void init() {
 
-        // Send telemetry message to signify shrek waiting;
+        // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Ready to Rumble");    //
         telemetry.update();
     }
@@ -100,7 +100,7 @@ public class TestWeirdJoystick extends OpMode{
      */
     @Override
     public void stop() {
-        //shrek.eye.close();
+        //robot.eye.close();
     }
 
 }

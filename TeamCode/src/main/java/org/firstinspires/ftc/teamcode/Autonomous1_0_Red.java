@@ -52,7 +52,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @Autonomous(name="Autonomous_Red", group="Autonomous")  // @Autonomous(...) is the other common choice
-//@Disabled
+@Disabled
 public class Autonomous1_0_Red extends LinearOpMode {
 
     /* Declare OpMode members. */

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -61,8 +62,8 @@ public class HardwareMech_2_0
         lBack = hwMap.dcMotor.get("motor3");    //Left Back
         rBack = hwMap.dcMotor.get("motor4");    //Right
 
-        lift = hwMap.dcMotor.get("lift");
-        launch = hwMap.dcMotor.get("launch");
+//        lift = hwMap.dcMotor.get("lift");
+//        launch = hwMap.dcMotor.get("launch");
 
         //eye = hwMap.lightSensor.get("eye");
 
@@ -76,12 +77,13 @@ public class HardwareMech_2_0
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
+        lBack.setDirection(DcMotor.Direction.FORWARD);
+        rFront.setDirection(DcMotor.Direction.FORWARD);
+//        lift.setDirection(DcMotor.Direction.FORWARD);
+//        launch.setDirection(DcMotor.Direction.REVERSE);
 
-        lift.setDirection(DcMotor.Direction.FORWARD);
-        launch.setDirection(DcMotor.Direction.REVERSE);
-
-        lift.setPower(0);
-        launch.setPower(0);
+//        lift.setPower(0);
+//        launch.setPower(0);
 
         //eye.enableLed(true);//TODO bruh which is more consistent
 
@@ -114,14 +116,15 @@ public class HardwareMech_2_0
         rBack.setPower(0);
 
     }
-    public void stopSpecial(){ // stop launch and lift. will stop other motors as we add more
-        launch.setPower(0.0);
-        lift.setPower(0.0);
-    }
+//    public void stopSpecial(){ // stop launch and lift. will stop other motors as we add more
+//        launch.setPower(0.0);
+//        lift.setPower(0.0);
+//    }
     public void goStraight (double power){// goes forward/backward. just input a negative power to go backward.
-        for (DcMotor thisMotor : driveMotors){
-            thisMotor.setPower(power);
-        }
+        lBack.setPower(power);
+        lFront.setPower(power);
+        rBack.setPower(power);
+        rFront.setPower(power);
     }
     public void turn (double power) { //turns. positive: right. negative: left. Pivot turn.
         lBack.setPower(power);

@@ -59,7 +59,7 @@ public class Teleop2_0 extends OpMode{
          */
         shrek.init(hardwareMap);
 
-        // Send telemetry message to signify shrek waiting;
+        // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Ready to Rumble");    //
         telemetry.update();
     }
@@ -103,18 +103,18 @@ public class Teleop2_0 extends OpMode{
             shrek.stopDrive();
             telemetry.addData("Movement: ", "Stop");
         }
-        if (gamepad2.a) // if a, then turn on the launchy thing
-            shrek.launch.setPower(0.4);
-        else
-            shrek.launch.setPower(0.0); //otherwise, stop launch thing
-        if  (gamepad2.x)
-            shrek.lift.setPower(0.2);
-        else if (gamepad2.y)
-            shrek.lift.setPower(-0.2);
-        else
-            shrek.lift.setPower(0.0);
+//        if (gamepad2.a) // if a, then turn on the launchy thing
+//            robot.launch.setPower(0.4);
+//        else
+//            robot.launch.setPower(0.0); //otherwise, stop launch thing
+//        if  (gamepad2.x)
+//            robot.lift.setPower(0.2);
+//        else if (gamepad2.y)
+//            robot.lift.setPower(-0.2);
+//        else
+//            robot.lift.setPower(0.0);
 
-        // Send telemetry message to signify shrek running;
+        // Send telemetry message to signify robot running;
 
         updateTelemetry(telemetry);
     }
@@ -124,7 +124,7 @@ public class Teleop2_0 extends OpMode{
      */
     @Override
     public void stop() {
-        //shrek.eye.close();
+        //robot.eye.close();
     }
 
 }
