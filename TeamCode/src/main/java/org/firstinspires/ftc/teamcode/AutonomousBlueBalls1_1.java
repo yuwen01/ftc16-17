@@ -69,7 +69,7 @@ public class AutonomousBlueBalls1_1 extends LinearOpMode {
         telemetry.update();
 
         /* eg: Initialize the hardware variables. Note that the strings used here as parameters
-         * to 'get' must correspond to the names assigned during the robot configuration
+         * to 'get' must correspond to the names assigned during the karel configuration
          * step (using the FTC Robot Controller app on the phone).
          */
         robot.init(hardwareMap);
@@ -82,8 +82,8 @@ public class AutonomousBlueBalls1_1 extends LinearOpMode {
 
             telemetry.update();
             robot.goForward(robot.AUTOPOWER);
-//            while (robot.eye.getLightDetected() < WHITE){
-//                telemetry.addData("Light", robot.eye.getLightDetected());
+//            while (karel.eye.getLightDetected() < WHITE){
+//                telemetry.addData("Light", karel.eye.getLightDetected());
 //                telemetry.update();
 //            }
 

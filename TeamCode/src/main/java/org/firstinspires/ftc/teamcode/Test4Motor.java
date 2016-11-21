@@ -36,7 +36,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 /**
- * This file provides basic Telop driving for a Pushbot robot.
+ * This file provides basic Telop driving for a Pushbot karel.
  * The code is structured as an Iterative OpMode
  *
  * All device access is managed through the HardwareOmni1_0 class.
@@ -66,7 +66,7 @@ public class Test4Motor extends OpMode{
          */
         robot.init(hardwareMap);
 
-        // Send telemetry message to signify robot waiting;
+        // Send telemetry message to signify karel waiting;
         telemetry.addData("Status", "Ready to Rumble");    //
         updateTelemetry(telemetry);
     }
@@ -86,7 +86,10 @@ public class Test4Motor extends OpMode{
     }
 
     /*
-     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
+     * UP : LFRONT
+     * DOWN : LBACK
+     * RIGHT : RFRONT
+     * LEFT : RBACK
      */
     @Override
     public void loop() {
@@ -112,7 +115,7 @@ public class Test4Motor extends OpMode{
         }
 
 
-        // Send telemetry message to signify robot running;
+        // Send telemetry message to signify karel running;
 
         updateTelemetry(telemetry);
     }

@@ -40,7 +40,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
  * pushes over the cap ball and parks on the base thing.
  */
 
-@Autonomous(name="Autonomous_Simple", group="Autonomous")  // @Autonomous(...) is the other common choice
+@Autonomous(name = "Autonomous_Simple")  // @Autonomous(...) is the other common choice
 //@Disabled
 public class Autonomous2_0 extends LinearOpMode {
 
@@ -48,8 +48,6 @@ public class Autonomous2_0 extends LinearOpMode {
     // DcMotor leftMotor = null;
     // DcMotor rightMotor = null;
     HardwareMech_2_0 robot = new HardwareMech_2_0();
-    private final long TIME1 = 2000;
-    private final long TIME2 = 500;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -57,37 +55,38 @@ public class Autonomous2_0 extends LinearOpMode {
         telemetry.update();
 
         /* eg: Initialize the hardware variables. Note that the strings used here as parameters
-         * to 'get' must correspond to the names assigned during the robot configuration
+         * to 'get' must correspond to the names assigned during the karel configuration
          * step (using the FTC Robot Controller app on the phone).
          */
-        robot.init(hardwareMap);
-        waitForStart();
-        // run until the end of the match (driver presses STOP)
-        telemetry.addData("Status", "Run Time: " + 0.000);
-        telemetry.update();
+        robot.init(hardwareMap);// initialize hardware variables
+        waitForStart(); // wait for play button
+        telemetry.addData("Path", "Start");
+        telemetry.update();// send telemetry to DS that robot has started routine
 
-        //Step 1: Move forward to get into range for launch
-        robot.goStraight(robot.AUTOPOWER);
-
-        telemetry.addData("dude", "stairs");
-        telemetry.update();
-
-        robot.waitForTick(TIME1);
-        //Step 2: Launch for 10 seconds
-        //robot.launch.setPower(0.4);
-        //robot.waitForTick(10000);
-        //robot.stopSpecial();
-
-        // Step 3:  Go forward a little more to push out cap ball
-        robot.goStraight(TIME2);
-
-        // Step 4:  Stop moving
+        double tmpStart = getRuntime();//get current run time in MS (I Think)
+        robot.goStraight(robot.AUTOPOWER);// turn on motors to go forward.
+        while (opModeIsActive() && getRuntime() < tmpStart + (robot.ONEFOOTDRIVETIME*2.0)){ //move 2.0 feet
+            telemetry.addData("Path", "1");// tell DS what stage of movement the robot's in
+            telemetry.update();
+        }
         robot.stopDrive();
 
-        telemetry.addData("Path", "Complete");
-        telemetry.update();
-        sleep(1000);
-        idle();
+        tmpStart = getRuntime();
+        robot.launch.setPower(0.4);
+        while (opModeIsActive() && getRuntime() < tmpStart + 2.5) {
+
+        }
+        robot.stopSpecial();
+
+        tmpStart = getRuntime();
+        robot.goStraight(robot.AUTOPOWER);
+        while (opModeIsActive() && getRuntime() < tmpStart + robot.ONEFOOTDRIVETIME*2.0){
+        }
+        robot.stopDrive();
+
+        telemetry.addData("Path", "Done");
+        telemetry.update();// stop, tell DS the robot's done
+
 
     }
 }

@@ -34,7 +34,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.Range;
 
 /**
  * Okey dokey kiddos this ones a doozy
@@ -48,7 +47,7 @@ import com.qualcomm.robotcore.util.Range;
 public class Teleop2_1 extends OpMode{
 
     /* Declare OpMode members. */
-    HardwareMech_2_0 robot       = new HardwareMech_2_0(); // use the hardware file bc it's radical
+    HardwareMech_2_0 karel = new HardwareMech_2_0(); // use the hardware file bc it's radical
                                                          // could also use HardwarePushbotMatrix class
     private final double xFactor = 0.3; //this controls how sensitive turning is.
     /*
@@ -59,9 +58,9 @@ public class Teleop2_1 extends OpMode{
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
-        robot.init(hardwareMap);
+        karel.init(hardwareMap);
 
-        // Send telemetry message to signify robot waiting;
+        // Send telemetry message to signify karel waiting;
         telemetry.addData("Status", "Ready to Rumble");    //
         telemetry.update();
     }
@@ -99,22 +98,22 @@ public class Teleop2_1 extends OpMode{
         right /= -2;
         telemetry.addLine("left: " + left + "\nright: " + right);
 
-        robot.lBack.setPower(left);
-        robot.lFront.setPower(left);
-        robot.rBack.setPower(right);
-        robot.rFront.setPower(right);
-//        if (gamepad2.a) // if a, then turn on the launchy thing
-//            robot.launch.setPower(0.4);
-//        else
-//            robot.launch.setPower(0.0); //otherwise, stop launch thing
-//        if  (gamepad2.x)
-//            robot.lift.setPower(0.2);
-//        else if (gamepad2.y)
-//            robot.lift.setPower(-0.2);
-//        else
-//            robot.lift.setPower(0.0);
+        karel.lBack.setPower(left);
+        karel.lFront.setPower(left);
+        karel.rBack.setPower(right);
+        karel.rFront.setPower(right);
+        if (gamepad2.a) // if a, then turn on the launchy thing
+            karel.launch.setPower(0.4);
+        else
+            karel.launch.setPower(0.0); //otherwise, stop launch thing
+        if  (gamepad2.x)
+            karel.lift.setPower(0.2);
+        else if (gamepad2.y)
+            karel.lift.setPower(-0.2);
+        else
+            karel.lift.setPower(0.0);
 
-        // Send telemetry message to signify robot running;
+        // Send telemetry message to signify karel running;
 
         updateTelemetry(telemetry);
     }
@@ -124,7 +123,7 @@ public class Teleop2_1 extends OpMode{
      */
     @Override
     public void stop() {
-        //robot.eye.close();
+        //karel.eye.close();
     }
 
 }

@@ -46,7 +46,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class Teleop2_0 extends OpMode{
 
     /* Declare OpMode members. */
-    HardwareMech_2_0 shrek       = new HardwareMech_2_0(); // use the hardware file bc it's radical
+    HardwareMech_2_0 karel = new HardwareMech_2_0(); // use the hardware file bc it's radical
                                                          // could also use HardwarePushbotMatrix class
 
     /*
@@ -57,9 +57,9 @@ public class Teleop2_0 extends OpMode{
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
-        shrek.init(hardwareMap);
+        karel.init(hardwareMap);
 
-        // Send telemetry message to signify robot waiting;
+        // Send telemetry message to signify karel waiting;
         telemetry.addData("Status", "Ready to Rumble");    //
         telemetry.update();
     }
@@ -84,37 +84,37 @@ public class Teleop2_0 extends OpMode{
     @Override
     public void loop() {
         if (gamepad1.dpad_up) { // when up on dpad is pressed, go forward
-            shrek.goStraight(shrek.TELEPOWER);
+            karel.goStraight(karel.TELEPOWER);
             telemetry.addData("Movement: ", "Forward");
         }
         else if (gamepad1.dpad_down) { //when down on dpad is pressed, go backward
-            shrek.goStraight(-shrek.TELEPOWER);
+            karel.goStraight(-karel.TELEPOWER);
             telemetry.addData("Movement: ", "Backward");
         }
         else if (gamepad1.dpad_right) { // when right on dpad is pressed, go right
-            shrek.turn(shrek.TELEPOWER);
+            karel.turn(karel.TELEPOWER);
             telemetry.addData("Movement: ", "Right");
         }
         else if (gamepad1.dpad_left) { // when left on dpad is pressed, go left
-            shrek.turn(-shrek.TELEPOWER);
+            karel.turn(-karel.TELEPOWER);
             telemetry.addData("Movement: ", "Left");
         }
         else{ //otherwise stop moving around!
-            shrek.stopDrive();
+            karel.stopDrive();
             telemetry.addData("Movement: ", "Stop");
         }
-//        if (gamepad2.a) // if a, then turn on the launchy thing
-//            robot.launch.setPower(0.4);
-//        else
-//            robot.launch.setPower(0.0); //otherwise, stop launch thing
-//        if  (gamepad2.x)
-//            robot.lift.setPower(0.2);
-//        else if (gamepad2.y)
-//            robot.lift.setPower(-0.2);
-//        else
-//            robot.lift.setPower(0.0);
+        if (gamepad2.a) // if a, then turn on the launchy thing
+            karel.launch.setPower(0.4);
+        else
+            karel.launch.setPower(0.0); //otherwise, stop launch thing
+        if  (gamepad2.x)
+            karel.lift.setPower(0.2);
+        else if (gamepad2.y)
+            karel.lift.setPower(-0.2);
+        else
+            karel.lift.setPower(0.0);
 
-        // Send telemetry message to signify robot running;
+        // Send telemetry message to signify karel running;
 
         updateTelemetry(telemetry);
     }
@@ -124,7 +124,7 @@ public class Teleop2_0 extends OpMode{
      */
     @Override
     public void stop() {
-        //robot.eye.close();
+        //karel.eye.close();
     }
 
 }

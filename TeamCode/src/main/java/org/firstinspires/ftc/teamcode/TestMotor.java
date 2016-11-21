@@ -66,7 +66,7 @@ public class TestMotor extends LinearOpMode {
         telemetry.update();
         robot.init(hardwareMap);
         /* eg: Initialize the hardware variables. Note that the strings used here as parameters
-         * to 'get' must correspond to the names assigned during the robot configuration
+         * to 'get' must correspond to the names assigned during the karel configuration
          * step (using the FTC Robot Controller app on the phone).
          */
         // leftMotor  = hardwareMap.dcMotor.get("left motor");

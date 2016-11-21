@@ -40,7 +40,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 /**
- * This file provides basic Telop driving for a Pushbot robot.
+ * This file provides basic Telop driving for a Pushbot karel.
  * The code is structured as an Iterative OpMode
  *
  * All device access is managed through the HardwareOmni1_0 class.
@@ -70,7 +70,7 @@ public class Teleop1_0 extends OpMode{
          */
         robot.init(hardwareMap);
 
-        // Send telemetry message to signify robot waiting;
+        // Send telemetry message to signify karel waiting;
         telemetry.addData("Status", "Ready to Rumble");    //
         telemetry.update();
     }
@@ -133,7 +133,7 @@ public class Teleop1_0 extends OpMode{
         else
             robot.lift.setPower(0.0);
 
-        // Send telemetry message to signify robot running;
+        // Send telemetry message to signify karel running;
 
         updateTelemetry(telemetry);
     }
@@ -143,7 +143,7 @@ public class Teleop1_0 extends OpMode{
      */
     @Override
     public void stop() {
-        //robot.eye.close();
+        //karel.eye.close();
     }
 
 }

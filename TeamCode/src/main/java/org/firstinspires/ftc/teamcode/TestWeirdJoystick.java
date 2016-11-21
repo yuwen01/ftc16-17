@@ -37,12 +37,13 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 /**
- * This thingamadoohicker is pretty much just to test Teleop 2_1's control scheme without having a robot.
- * Just kinda displays the stuff that we're supposed
+ * This thingamadoohicker is pretty much just to test Teleop 2_1's control scheme without having a karel.
+ * Just kinda displays the motor powers we're supposed to get based on Joystick values
+ *
  */
 
 @TeleOp(name="WeirdJoystickDyingSoon", group="Teleop")
-//@Disabled
+@Disabled
 public class TestWeirdJoystick extends OpMode{
 
     /* Declare OpMode members. */
@@ -54,7 +55,7 @@ public class TestWeirdJoystick extends OpMode{
     @Override
     public void init() {
 
-        // Send telemetry message to signify robot waiting;
+        // Send telemetry message to signify karel waiting;
         telemetry.addData("Status", "Ready to Rumble");    //
         telemetry.update();
     }
@@ -100,7 +101,7 @@ public class TestWeirdJoystick extends OpMode{
      */
     @Override
     public void stop() {
-        //robot.eye.close();
+        //karel.eye.close();
     }
 
 }

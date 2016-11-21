@@ -58,7 +58,7 @@ import java.util.List;
  * is explained below.
  */
 
-@Autonomous(name="Vuforia?", group ="Test")
+@Autonomous(name="Vuforia")
 //@Disabled
 public class VuforiaTest extends LinearOpMode {
 
@@ -73,18 +73,16 @@ public class VuforiaTest extends LinearOpMode {
      * localization engine.
      */
     VuforiaLocalizer vuforia;
-
-    HardwareMech_2_0 robot = new HardwareMech_2_0();
     @Override public void runOpMode() {
         /**
          * Start up Vuforia, telling it the id of the view that we wish to use as the parent for
          * the camera monitor feedback; if no camera monitor feedback is desired, use the parameterless
          * constructor instead. We also indicate which camera on the RC that we wish to use. For illustration
-         * purposes here, we choose the back camera; for a competition robot, the front camera might
+         * purposes here, we choose the back camera; for a competition karel, the front camera might
          * prove to be more convenient.
          *
          * Note that in addition to indicating which camera is in use, we also need to tell the system
-         * the location of the phone on the robot; see phoneLocationOnRobot below.
+         * the location of the phone on the karel; see phoneLocationOnRobot below.
          *
          * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
          * 'parameters.vuforiaLicenseKey' is initialized is for illustration only, and will not function.
@@ -100,7 +98,7 @@ public class VuforiaTest extends LinearOpMode {
                 "TdGT0pTiEKfus3LBLQeT77/tcPgDepfOUT/tsoqx4Atg1Xz6XdbF+CGYatJL9oyLaLjMRSkAq+uERdSeOZTEAhtx" +
                 "2MMGxc/HEwerezgg87IPoD1pcbSnOsLgmVrUMuqi0TIn/KtvsiJRVmG5dIO58WnbVUxlTWBxSNvcwQJ9E8NZXQZGSCb" +
                 "QXHDPHrf2bmcNtSp39lYx+ZqaKaRzqoCS6soItsnaJrV6gbTb8zWA";
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
         /**
@@ -112,13 +110,20 @@ public class VuforiaTest extends LinearOpMode {
          * documentation directory.
          */
         VuforiaTrackables imageTargets = this.vuforia.loadTrackablesFromAsset("ImageMarkers");
-        VuforiaTrackable rTools = imageTargets.get(0);
+        VuforiaTrackable bWheels = imageTargets.get(0);
+        bWheels.setName("Wheels");  // Wheels
+
+        VuforiaTrackable rTools = imageTargets.get(1);
         rTools.setName("Tools");  // Tools
 
-        VuforiaTrackable blueTarget  = imageTargets.get(1);
-        blueTarget.setName("BlueTarget");  // Chips
+        VuforiaTrackable bLegos = imageTargets.get(2);
+        bLegos.setName("Legos");  // Legos
 
-        /** For convenience, gather together all the trackable objects in one easily-iterable collection */
+        VuforiaTrackable rGears = imageTargets.get(3);
+        rGears.setName("Gears");  // Gears
+
+        /** For convenience, gather together all the trackable o
+         * bjects in one easily-iterable collection */
         List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
         allTrackables.addAll(imageTargets);
 
@@ -135,7 +140,7 @@ public class VuforiaTest extends LinearOpMode {
 
         /**
          * In order for localization to work, we need to tell the system where each target we
-         * wish to use for navigation resides on the field, and we need to specify where on the robot
+         * wish to use for navigation resides on the field, and we need to specify where on the karel
          * the phone resides. These specifications are in the form of <em>transformation matrices.</em>
          * Transformation matrices are a central, important concept in the math here involved in localization.
          * See <a href="https://en.wikipedia.org/wiki/Transformation_matrix">Transformation Matrix</a>
@@ -182,14 +187,14 @@ public class VuforiaTest extends LinearOpMode {
          * In this configuration, the target's coordinate system aligns with that of the field.
          *
          * In a real situation we'd also account for the vertical (Z) offset of the target,
-         * but for simplicity, we ignore that here; for a real robot, you'll want to fix that.
+         * but for simplicity, we ignore that here; for a real karel, you'll want to fix that.
          *
          * To place the Stones Target on the Red Audience wall:
          * - First we rotate it 90 around the field's X axis to flip it upright
          * - Then we rotate it  90 around the field's Z access to face it away from the audience.
          * - Finally, we translate it back along the X axis towards the red audience wall.
          */
-        OpenGLMatrix rToolsLocationOnField = OpenGLMatrix
+        OpenGLMatrix bWheelsLocationonField = OpenGLMatrix
                 /* Then we translate the target off to the RED WALL. Our translation here
                 is a negative translation in X.*/
                 .translation(-mmFTCFieldWidth/2, 0, 33)
@@ -197,15 +202,15 @@ public class VuforiaTest extends LinearOpMode {
                         /* First, in the fixed (field) coordinate system, we rotate 90deg in X, then 90 in Z */
                         AxesReference.EXTRINSIC, AxesOrder.XZX,
                         AngleUnit.DEGREES, 90, 90, 0));
-        rTools.setLocation(rToolsLocationOnField);
-        RobotLog.ii(TAG, "Tools=%s", format(rToolsLocationOnField));
+        bWheels.setLocation(bWheelsLocationonField);
+        RobotLog.ii(TAG, "Tools=%s", format(bWheelsLocationonField));
 
        /*
         * To place the Stones Target on the Blue Audience wall:
         * - First we rotate it 90 around the field's X axis to flip it upright
         * - Finally, we translate it along the Y axis towards the blue audience wall.
         */
-        OpenGLMatrix blueTargetLocationOnField = OpenGLMatrix
+        OpenGLMatrix rToolsLocationonField = OpenGLMatrix
                 /* Then we translate the target off to the Blue Audience wall.
                 Our translation here is a positive translation in Y.*/
                 .translation(0, mmFTCFieldWidth/2, 33)
@@ -213,14 +218,14 @@ public class VuforiaTest extends LinearOpMode {
                         /* First, in the fixed (field) coordinate system, we rotate 90deg in X */
                         AxesReference.EXTRINSIC, AxesOrder.XZX,
                         AngleUnit.DEGREES, 90, 0, 0));
-        blueTarget.setLocation(blueTargetLocationOnField);
-        RobotLog.ii(TAG, "Blue Target=%s", format(blueTargetLocationOnField));
+        rTools.setLocation(rToolsLocationonField);
+        RobotLog.ii(TAG, "Blue Target=%s", format(rToolsLocationonField));
 
         /**
-         * Create a transformation matrix describing where the phone is on the robot. Here, we
-         * put the phone on the right hand side of the robot with the screen facing in (see our
-         * choice of FRONT camera above) and in landscape mode. Starting from alignment between the
-         * robot's and phone's axes, this is a rotation of -90deg along the Y axis.
+         * Create a transformation matrix describing where the phone is on the karel. Here, we
+         * put the phone on the right hand side of the karel with the screen facing in (see our
+         * choice of BACK camera above) and in landscape mode. Starting from alignment between the
+         * karel's and phone's axes, this is a rotation of -90deg along the Y axis.
          *
          * When determining whether a rotation is positive or negative, consider yourself as looking
          * down the (positive) axis of rotation from the positive towards the origin. Positive rotations
@@ -240,24 +245,24 @@ public class VuforiaTest extends LinearOpMode {
          * listener is a {@link VuforiaTrackableDefaultListener} and can so safely cast because
          * we have not ourselves installed a listener of a different type.
          */
+        ((VuforiaTrackableDefaultListener)bWheels.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
         ((VuforiaTrackableDefaultListener)rTools.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
-        ((VuforiaTrackableDefaultListener)blueTarget.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
 
         /**
          * A brief tutorial: here's how all the math is going to work:
          *
-         * C = phoneLocationOnRobot  maps   phone coords -> robot coords
+         * C = phoneLocationOnRobot  maps   phone coords -> karel coords
          * P = tracker.getPose()     maps   image target coords -> phone coords
          * L = redTargetLocationOnField maps   image target coords -> field coords
          *
          * So
          *
-         * C.inverted()              maps   robot coords -> phone coords
+         * C.inverted()              maps   karel coords -> phone coords
          * P.inverted()              maps   phone coords -> imageTarget coords
          *
          * Putting that all together,
          *
-         * L x P.inverted() x C.inverted() maps robot coords to field coords.
+         * L x P.inverted() x C.inverted() maps karel coords to field coords.
          *
          * @see VuforiaTrackableDefaultListener#getRobotLocation()
          */
@@ -266,7 +271,6 @@ public class VuforiaTest extends LinearOpMode {
         telemetry.addData(">", "Press Play to start tracking");
         telemetry.update();
 
-        robot.init(hardwareMap);
         waitForStart();
 
         /** Start tracking the data sets we care about. */
@@ -274,33 +278,29 @@ public class VuforiaTest extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-//            for (VuforiaTrackable trackable : allTrackables) {
-//                /**
-//                 * getUpdatedRobotLocation() will return null if no new information is available since
-//                 * the last time that call was made, or if the trackable is not currently visible.
-//                 * getRobotLocation() will return null if the trackable is not currently visible.
-//                 */
-//telemetry.addData(trackable.getName(), ((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible() ? "Visible" : "Not Visible");    //
-//
-//                OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
-//                if (robotLocationTransform != null) {
-//                    lastLocation = robotLocationTransform;
-//                }
-//
-//            }
+            for (VuforiaTrackable trackable : allTrackables) {
+                /**
+                 * getUpdatedRobotLocation() will return null if no new information is available since
+                 * the last time that call was made, or if the trackable is not currently visible.
+                 * getRobotLocation() will return null if the trackable is not currently visible.
+                 */
+                telemetry.addData(trackable.getName(), ((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible() ? "Visible" : "Not Visible");    //
 
-            robot.goStraight(SLOWPWR);
-            while(((VuforiaTrackableDefaultListener)allTrackables.get(0).getListener()).isVisible()) {
+                OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
+                if (robotLocationTransform != null) {
+                    lastLocation = robotLocationTransform;
+                }
+
             }
-            /**
-             * Provide feedback as to where the robot was last located (if we know).
+
+             /* Provide feedback as to where the karel was last located (if we know).
              */
-//            if (lastLocation != null) {
-//                //  RobotLog.vv(TAG, "robot=%s", format(lastLocation));
-//                telemetry.addData("Pos", format(lastLocation));
-//            } else {
-//                telemetry.addData("Pos", "Unknown");
-//            }
+            if (lastLocation != null) {
+                //  RobotLog.vv(TAG, "karel=%s", format(lastLocation));
+                telemetry.addData("Pos", format(lastLocation));
+            } else {
+                telemetry.addData("Pos", "Unknown");
+            }
             telemetry.update();
         }
     }

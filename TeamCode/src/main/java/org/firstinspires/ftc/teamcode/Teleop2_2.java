@@ -46,82 +46,82 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name="Teleop2_2", group="Teleop")
 //@Disabled
 public class Teleop2_2 extends OpMode{
+	/* Declare OpMode members. */
+	HardwareMech_2_0 karel = new HardwareMech_2_0(); // use the hardware file bc it's radical
 
-    /* Declare OpMode members. */
-    HardwareMech_2_0 robot = new HardwareMech_2_0(); // use the hardware file bc it's radical
-                                                         // could also use HardwarePushbotMatrix clas
-    /*
-     * Code to run ONCE when the driver hits INIT
-     */
-    @Override
-    public void init() {
-        /* Initialize the hardware variables.
-         * The init() method of the hardware class does all the work here
-         */
-        robot.init(hardwareMap);
+	private final double LIFTPWR = 0.7;
+	/*
+	 * Code to run ONCE when the driver hits INIT
+	 */
+	@Override
+	public void init() {
+		/* Initialize the hardware variables.
+		 * The init() method of the hardware class does all the work here
+		 */
+		karel.init(hardwareMap);
 
-        // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Ready to Rumble");    //
-        telemetry.update();
-    }
+		// Send telemetry message to signify karel waiting;
+		telemetry.addData("Status", "Ready to Rumble");    //
+		telemetry.update();
+	}
 
-    /*
-     * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
-     */
-    @Override
-    public void init_loop() {
-    }
+	/*
+	 * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
+	 */
+	@Override
+	public void init_loop() {
+	}
 
-    /*
-     * Code to run ONCE when the driver hits PLAY
-     */
-    @Override
-    public void start() {
-    }
+	/*
+	 * Code to run ONCE when the driver hits PLAY
+	 */
+	@Override
+	public void start() {
+	}
 
-    /*
-     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
-     */
-    @Override
-    public void loop() {
-        /*
-         so you take the forward component and do the tilty thing by subtracting the x.
-         ofc this makes it impossible to go like left = -1 and right = 1.
-         that sucks
-         but turning should naturally be slower.
-         so how bad is it?
-         im open to ideas.
-         */
-        double left = -gamepad1.left_stick_y;
-        double right = -gamepad1.right_stick_y;
-        telemetry.addLine("left: " + left + "\nright: " + right);
+	/*
+	 * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
+	 */
+	@Override
+	public void loop() {
+		/*
+		 so you take the forward component and do the tilty thing by subtracting the x.
+		 ofc this makes it impossible to go like left = -1 and right = 1.
+		 that sucks
+		 but turning should naturally be slower.
+		 so how bad is it?
+		 im open to ideas.
+		 */
+		double left = -gamepad1.left_stick_y;
+		double right = -gamepad1.right_stick_y;
+		telemetry.addLine("left: " + left + "\nright: " + right);
 
-        robot.lBack.setPower(left);
-        robot.lFront.setPower(left);
-        robot.rBack.setPower(right);
-        robot.rFront.setPower(right);
-//        if (gamepad2.a) // if a, then turn on the launchy thing
-//            robot.launch.setPower(0.4);
-//        else
-//            robot.launch.setPower(0.0); //otherwise, stop launch thing
-//        if  (gamepad2.x)
-//            robot.lift.setPower(0.2);
-//        else if (gamepad2.y)
-//            robot.lift.setPower(-0.2);
-//        else
-//            robot.lift.setPower(0.0);
+		karel.lBack.setPower(left);
+		karel.lFront.setPower(left);
+		karel.rBack.setPower(right);
+		karel.rFront.setPower(right);
+		if (gamepad2.a) // if a, then turn on the launchy thing
+			karel.launch.setPower(0.4);
+		else
+			karel.launch.setPower(0.0); //otherwise, stop launch thing
+		if (gamepad2.x)
+			karel.lift.setPower(0.2);
+		else if (gamepad2.y)
+			karel.lift.setPower(-0.2);
+		else
+			karel.lift.setPower(0.0);
 
-        // Send telemetry message to signify robot running;
+		// Send telemetry message to signify karel running;
 
-        updateTelemetry(telemetry);
-    }
+		updateTelemetry(telemetry);
+	}
 
-    /*
-     * Code to run ONCE after the driver hits STOP
-     */
-    @Override
-    public void stop() {
-        //robot.eye.close();
-    }
+	/*
+	 * Code to run ONCE after the driver hits STOP
+	 */
+	@Override
+	public void stop() {
+		//karel.eye.close();
+	}
 
 }
