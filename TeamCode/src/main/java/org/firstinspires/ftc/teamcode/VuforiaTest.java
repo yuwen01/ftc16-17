@@ -173,10 +173,10 @@ public class VuforiaTest extends LinearOpMode {
          *
          * </ol>
          *
-         * This example places the "stones" image on the perimeter wall to the Left
+         * This example places the "stones" image on the perimeter wall to the LeftMotor
          *  of the Red Driver station wall.  Similar to the Red Beacon Location on the Res-Q
          *
-         * This example places the "chips" image on the perimeter wall to the Right
+         * This example places the "chips" image on the perimeter wall to the RightMotor
          *  of the Blue Driver station.  Similar to the Blue Beacon Location on the Res-Q
          *
          * See the doc folder of this project for a description of the field Axis conventions.

@@ -16,10 +16,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * This hardware class assumes the following device names have been configured on the karel:
  * Note:  All names are lower case and some have single spaces between words.
  *
- * Motor channel:  Left  Up   drive motor:        "motor1"
- * Motor channel:  Right Up   drive motor:        "motor2"
- * Motor channel:  Left  Down drive motor:        "motor3"
- * Motor channel:  Right Down drive motor:        "motor4"
+ * Motor channel:  LeftMotor  Up   drive motor:        "motor1"
+ * Motor channel:  RightMotor Up   drive motor:        "motor2"
+ * Motor channel:  LeftMotor  Down drive motor:        "motor3"
+ * Motor channel:  RightMotor Down drive motor:        "motor4"
  * Motor channel:  Manipulator drive motor:  "left_arm"
  * Servo channel:  Servo to open left claw:  "left_hand"
  * Servo channel:  Servo to open right claw: "right_hand"
@@ -58,10 +58,10 @@ public class HardwareOmni_1_1
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        lFront = hwMap.dcMotor.get("motor1");   //Left Front
-        rFront = hwMap.dcMotor.get("motor2");   //Right Front
-        lBack = hwMap.dcMotor.get("motor3");    //Left Back
-        rBack = hwMap.dcMotor.get("motor4");    //Right
+        lFront = hwMap.dcMotor.get("motor1");   //LeftMotor FrontMotor
+        rFront = hwMap.dcMotor.get("motor2");   //RightMotor FrontMotor
+        lBack = hwMap.dcMotor.get("motor3");    //LeftMotor BackMotor
+        rBack = hwMap.dcMotor.get("motor4");    //RightMotor
 
         lift = hwMap.dcMotor.get("lift");
         launch = hwMap.dcMotor.get("launch");

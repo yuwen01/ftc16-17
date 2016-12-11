@@ -104,11 +104,11 @@ public class Teleop1_0 extends OpMode{
         }
         else if (gamepad1.dpad_right) { // when right on dpad is pressed, go right
             robot.goRight(robot.TELEPOWER);
-            telemetry.addData("Movement: ", "Right");
+            telemetry.addData("Movement: ", "RightMotor");
         }
         else if (gamepad1.dpad_left) { // when left on dpad is pressed, go left
             robot.goLeft(robot.TELEPOWER);
-            telemetry.addData("Movement: ", "Left");
+            telemetry.addData("Movement: ", "LeftMotor");
         }
         else if (gamepad1.left_bumper) { // when lbumper on dpad is pressed, spin left
             robot.spinLeft(robot.TELEPOWER);

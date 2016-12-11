@@ -32,9 +32,21 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.vuforia.Image;
+import com.vuforia.PIXEL_FORMAT;
+import com.vuforia.Vuforia;
+
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+
+import java.nio.ByteBuffer;
 
 /**
  * This file is a simple autonomous that launches the balls we have, then
@@ -42,51 +54,72 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
  */
 
 @Autonomous(name = "Autonomous_Simple")  // @Autonomous(...) is the other common choice
-@Disabled
-public class Autonomous2_0 extends LinearOpMode {
+//@Disabled
+public class Autonomous3_0 extends LinearOpMode {
 
     /* Declare OpMode members. */
     // DcMotor leftMotor = null;
     // DcMotor rightMotor = null;
-    HardwareMech_2_0 robot = new HardwareMech_2_0();
+    HardwareOmni3_0 robot = new HardwareOmni3_0();
+
+    private final double LINETHRESHOLD = 0.5;
+    private final double SLOW = 0.2;
 
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        /* eg: Initialize the hardware variables. Note that the strings used here as parameters
-         * to 'get' must correspond to the names assigned during the karel configuration
-         * step (using the FTC Robot Controller app on the phone).
-         */
+
+        VuforiaLocalizer.Parameters params = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
+        params.vuforiaLicenseKey = robot.LICENSEKEY;
+        params.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+
+
+        VuforiaLocalizer locale = ClassFactory.createVuforiaLocalizer(params);
+        locale.setFrameQueueCapacity(1);
+        Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true);
+
+
         robot.init(hardwareMap);// initialize hardware variables
         waitForStart(); // wait for play button
         telemetry.addData("Path", "Start");
         telemetry.update();// send telemetry to DS that robot has started routine
 
-        double tmpStart = getRuntime();//get current run time in MS (I Think)
-        robot.goStraight(-robot.AUTOPOWER);// turn on motors to go forward.
-        while (opModeIsActive() && getRuntime() < tmpStart + (robot.ONEFOOTDRIVETIME*2.0)){ //move 2.0 feet
-            telemetry.addData("Path", "1");// tell DS what stage of movement the robot's in
-            telemetry.update();
-        }
+        double tmpStart = getRuntime();//get current run time in MS
         robot.stopDrive();
+        while (opModeIsActive() && getRuntime() < tmpStart + 10.0){
+        }
 
         tmpStart = getRuntime();
-        robot.launch.setPower(0.4);
-        while (opModeIsActive() && getRuntime() < tmpStart + 2.5) {
+        robot.goStraight(robot.AUTOPOWER);
+        while (opModeIsActive() && getRuntime() < tmpStart + 7.0){
         }
-        robot.stopSpecial();
 
         tmpStart = getRuntime();
-        robot.goStraight(-robot.AUTOPOWER);
-        while (opModeIsActive() && getRuntime() < tmpStart + robot.ONEFOOTDRIVETIME*2.0){
-        }
-        robot.stopDrive();
+        robot.spin(robot.AUTOPOWER);
+        while (opModeIsActive() && getRuntime() < tmpStart + 2.0){}
 
+        robot.stopDrive();
         telemetry.addData("Path", "Done");
-        telemetry.update();// stop, tell DS the robot's done
-
+        telemetry.update();// stop, tell DS the robot's don
 
     }
+    public void encoderDriveRight(double targetFeet){
+
+    }
+    @Nullable
+    public static Image getImageFromFrame(VuforiaLocalizer.CloseableFrame frame, int format) {
+
+        long numImgs = frame.getNumImages();
+        for (int i = 0; i < numImgs; i++) {
+            if (frame.getImage(i).getFormat() == format) {
+                return frame.getImage(i);
+            }//if
+        }//for
+
+        return null;
+    }
+
 }
+

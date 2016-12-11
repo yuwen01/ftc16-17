@@ -96,11 +96,11 @@ public class TestWifi extends OpMode{
         }
         else if (gamepad1.dpad_right) {
 
-            telemetry.addData("Movement: ", "Right");
+            telemetry.addData("Movement: ", "RightMotor");
         }
         else if (gamepad1.dpad_left) {
 
-            telemetry.addData("Movement: ", "Left");
+            telemetry.addData("Movement: ", "LeftMotor");
         }
         else if (gamepad1.left_bumper) {
 

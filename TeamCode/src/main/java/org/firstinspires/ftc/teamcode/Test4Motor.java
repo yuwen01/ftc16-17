@@ -103,11 +103,11 @@ public class Test4Motor extends OpMode{
         }
         else if (gamepad1.dpad_right) {
             robot.rFront.setPower(robot.TELEPOWER);
-            telemetry.addData("Movement: ", "Right");
+            telemetry.addData("Movement: ", "RightMotor");
         }
         else if (gamepad1.dpad_left) {
             robot.rBack.setPower(robot.TELEPOWER);
-            telemetry.addData("Movement: ", "Left");
+            telemetry.addData("Movement: ", "LeftMotor");
         }
         else{
             robot.stopDrive();

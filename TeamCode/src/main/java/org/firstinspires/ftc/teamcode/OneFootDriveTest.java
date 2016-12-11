@@ -33,7 +33,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 /**
@@ -41,9 +40,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
  * pushes over the cap ball and parks on the base thing.
  */
 
-@Autonomous(name = "Autonomous_Simple")  // @Autonomous(...) is the other common choice
-@Disabled
-public class Autonomous2_0 extends LinearOpMode {
+@Autonomous(name = "1pUNCH")  // @Autonomous(...) is the other common choice
+//@Disabled
+public class OneFootDriveTest extends LinearOpMode {
 
     /* Declare OpMode members. */
     // DcMotor leftMotor = null;
@@ -66,27 +65,13 @@ public class Autonomous2_0 extends LinearOpMode {
 
         double tmpStart = getRuntime();//get current run time in MS (I Think)
         robot.goStraight(-robot.AUTOPOWER);// turn on motors to go forward.
-        while (opModeIsActive() && getRuntime() < tmpStart + (robot.ONEFOOTDRIVETIME*2.0)){ //move 2.0 feet
+        while (opModeIsActive() && getRuntime() < tmpStart + (robot.ONEFOOTDRIVETIME*1.0)){ //move 2.0 feet
             telemetry.addData("Path", "1");// tell DS what stage of movement the robot's in
             telemetry.update();
         }
         robot.stopDrive();
 
-        tmpStart = getRuntime();
-        robot.launch.setPower(0.4);
-        while (opModeIsActive() && getRuntime() < tmpStart + 2.5) {
-        }
-        robot.stopSpecial();
-
-        tmpStart = getRuntime();
-        robot.goStraight(-robot.AUTOPOWER);
-        while (opModeIsActive() && getRuntime() < tmpStart + robot.ONEFOOTDRIVETIME*2.0){
-        }
-        robot.stopDrive();
-
         telemetry.addData("Path", "Done");
         telemetry.update();// stop, tell DS the robot's done
-
-
     }
 }

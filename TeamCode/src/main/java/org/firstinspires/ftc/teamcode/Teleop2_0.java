@@ -32,6 +32,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -42,7 +43,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  */
 
 @TeleOp(name="Teleop2_0", group="Teleop")
-//@Disabled
+@Disabled
 public class Teleop2_0 extends OpMode{
 
     /* Declare OpMode members. */
@@ -93,24 +94,24 @@ public class Teleop2_0 extends OpMode{
         }
         else if (gamepad1.dpad_right) { // when right on dpad is pressed, go right
             karel.turn(karel.TELEPOWER);
-            telemetry.addData("Movement: ", "Right");
+            telemetry.addData("Movement: ", "RightMotor");
         }
         else if (gamepad1.dpad_left) { // when left on dpad is pressed, go left
             karel.turn(-karel.TELEPOWER);
-            telemetry.addData("Movement: ", "Left");
+            telemetry.addData("Movement: ", "LeftMotor");
         }
-        else{ //otherwise stop moving around!
+        else{ //otherwise stop moving around
             karel.stopDrive();
             telemetry.addData("Movement: ", "Stop");
         }
         if (gamepad2.a) // if a, then turn on the launchy thing
-            karel.launch.setPower(0.4);
+            karel.launch.setPower(0.7);
         else
             karel.launch.setPower(0.0); //otherwise, stop launch thing
         if  (gamepad2.x)
-            karel.lift.setPower(0.2);
+            karel.lift.setPower(1.0);
         else if (gamepad2.y)
-            karel.lift.setPower(-0.2);
+            karel.lift.setPower(-1.0);
         else
             karel.lift.setPower(0.0);
 
