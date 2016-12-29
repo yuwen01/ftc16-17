@@ -32,7 +32,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.ftccommon.DbgLog;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -48,8 +47,11 @@ public class TestSensors extends LinearOpMode {
     /* Declare OpMode members. */
     // DcMotor leftMotor = null;
     // DcMotor rightMotor = null;
-    HardwareMRSensor4_0 robot = new HardwareMRSensor4_0();
-    final static boolean LOGCAT = false;
+    HardwareOmni3_0 robot = new HardwareOmni3_0();
+
+    private final double LINETHRESHOLD = 0.5;
+    private final double SLOW = 0.2;
+
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
@@ -61,32 +63,17 @@ public class TestSensors extends LinearOpMode {
          */
         robot.init(hardwareMap);// initialize hardware variables
         waitForStart(); // wait for play button
-        calibrateGyro();
         while (opModeIsActive()){
-            if (LOGCAT){
-                DbgLog.msg("Floor Light: %03f", robot.FloorEye.getLightDetected());
-                DbgLog.msg("BeaconRed: %03f", robot.BeaconEye.red());
-                DbgLog.msg("Gyro: %+d", robot.Gyro.getHeading());
-            }
-            else{
-                telemetry.addData("Floor", robot.FloorEye.getLightDetected());
-                telemetry.addData("BeaconRed", robot.BeaconEye.red());
-                telemetry.addData("Gyro", robot.Gyro.getHeading());
-            }
+            telemetry.addData("Floor", robot.FloorEye.getLightDetected());
+            telemetry.addData("Distance", robot.DistanceLooker.getUltrasonicLevel());
+            telemetry.addData("Beacon", robot.BeaconLooker.getLightDetected());
             updateTelemetry(telemetry);
-        }
-    }
-    public void calibrateGyro(){
-        this.robot.Gyro.calibrate();
-        double tmpTime = getRuntime();
 
-        while (opModeIsActive() && this.robot.Gyro.isCalibrating()){
-            if (tmpTime > getRuntime() + 5.0) {
-                DbgLog.msg("Calibration took too long");
-                return;
-            }
         }
-        // 5.0 is an arbitrarily long timeout value. If calibrating ends up taking longer than 5 seconds, make the number bigger.
     }
+    public void encoderDriveRight(double targetFeet){
+
+    }
+
 }
 

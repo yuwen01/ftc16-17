@@ -30,30 +30,28 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.HardwareMR4_0;
+
 /**
- * This file provides basic Telop driving for a Pushbot karel.
- * The code is structured as an Iterative OpMode
+ * Standard omni wheel teleop
  *
- * All device access is managed through the HardwareOmni1_0 class.
+ * gamepad1: dpad for movement, bumpers for spinning
+ * gamepad2: a: collector, b: launch //TODO I still need to know what kind of operation is going on here
  *
- * This particular OpMode executes a basic Omni Wheel Teleop
- * It also opens and closes the claws slowly using the left and right Bumper buttons.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Test4Motor", group="Teleop")
+@TeleOp(name="TeleopMR4_0", group="Teleop")
 //@Disabled
-public class Test4Motor extends OpMode{
+public class TeleopMR4_0 extends OpMode{
 
     /* Declare OpMode members. */
-    HardwareLegacy4_0 robot       = new HardwareLegacy4_0(); // use the class created to define a Pushbot's hardware
+    HardwareMR4_0 robot       = new HardwareMR4_0(); // use the class created to define a Pushbot's hardware
                                                          // could also use HardwarePushbotMatrix class
 
     /*
@@ -68,7 +66,7 @@ public class Test4Motor extends OpMode{
 
         // Send telemetry message to signify karel waiting;
         telemetry.addData("Status", "Ready to Rumble");    //
-        updateTelemetry(telemetry);
+        telemetry.update();
     }
 
     /*
@@ -86,36 +84,39 @@ public class Test4Motor extends OpMode{
     }
 
     /*
-     * UP : LFRONT
-     * DOWN : LBACK
-     * RIGHT : RFRONT
-     * LEFT : RBACK
+     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
     @Override
     public void loop() {
-        if (gamepad1.dpad_up) {
-            robot.lFront.setPower(robot.TELEPOWER);
+        if (gamepad1.dpad_up) { // when up on dpad is pressed, go forward
+            robot.goStraight(robot.TELEPOWER);
             telemetry.addData("Movement: ", "Forward");
         }
-        else if (gamepad1.dpad_down) {
-            robot.lBack.setPower(robot.TELEPOWER);
+        else if (gamepad1.dpad_down) { //when down on dpad is pressed, go backward
+            robot.goStraight(-robot.TELEPOWER);
             telemetry.addData("Movement: ", "Backward");
         }
-        else if (gamepad1.dpad_right) {
-            robot.rFront.setPower(robot.TELEPOWER);
+        else if (gamepad1.dpad_right) { // when right on dpad is pressed, go right
+            robot.strafe(robot.TELEPOWER);
             telemetry.addData("Movement: ", "RightMotor");
         }
-        else if (gamepad1.dpad_left) {
-            robot.rBack.setPower(robot.TELEPOWER);
+        else if (gamepad1.dpad_left) { // when left on dpad is pressed, go left
+            robot.strafe(-robot.TELEPOWER);
             telemetry.addData("Movement: ", "LeftMotor");
         }
-        else{
+        else if (gamepad1.left_bumper) { // when lbumper on dpad is pressed, spin left
+            robot.spin(-robot.TELEPOWER);
+            telemetry.addData("Movement: ", "CCL");
+        }
+        else if (gamepad1.right_bumper) { // when rbumper on dpad is pressed, spin right
+            robot.spin(robot.TELEPOWER);
+            telemetry.addData("Movement: ", "CC");
+        }
+        else{ //otherwise stop moving around!
             robot.stopDrive();
             telemetry.addData("Movement: ", "Stop");
         }
-
-
-        // Send telemetry message to signify karel running;
+        //TODO add launchy things when it gets to that time
 
         updateTelemetry(telemetry);
     }
@@ -125,6 +126,7 @@ public class Test4Motor extends OpMode{
      */
     @Override
     public void stop() {
+        //karel.eye.close();
     }
 
 }

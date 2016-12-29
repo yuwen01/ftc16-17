@@ -92,7 +92,7 @@ public class Autonomous3_0 extends LinearOpMode {
         }
 
         tmpStart = getRuntime();
-        robot.goStraight(robot.AUTOPOWER);
+        robot.goStraight(-robot.AUTOPOWER);
         while (opModeIsActive() && getRuntime() < tmpStart + 7.0){
         }
 

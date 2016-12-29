@@ -47,7 +47,7 @@ public class OneFootDriveTest extends LinearOpMode {
     /* Declare OpMode members. */
     // DcMotor leftMotor = null;
     // DcMotor rightMotor = null;
-    HardwareMech_2_0 robot = new HardwareMech_2_0();
+    HardwareLegacy4_0 robot = new HardwareLegacy4_0();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -64,8 +64,8 @@ public class OneFootDriveTest extends LinearOpMode {
         telemetry.update();// send telemetry to DS that robot has started routine
 
         double tmpStart = getRuntime();//get current run time in MS (I Think)
-        robot.goStraight(-robot.AUTOPOWER);// turn on motors to go forward.
-        while (opModeIsActive() && getRuntime() < tmpStart + (robot.ONEFOOTDRIVETIME*1.0)){ //move 2.0 feet
+        robot.goStraight(robot.AUTOPOWER);// turn on motors to go forward.
+        while (opModeIsActive() && getRuntime() < tmpStart + robot.ONEFOOTDRIVETIME){
             telemetry.addData("Path", "1");// tell DS what stage of movement the robot's in
             telemetry.update();
         }

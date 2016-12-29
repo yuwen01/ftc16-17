@@ -23,7 +23,7 @@ public class HardwareOmni3_0 {
     public double TELEPOWER = 1.0;
     public final double AUTOPOWER = 0.5;
     public final double ONEFOOTDRIVETIME = 0.96;     // THis and NINETYDEGREEDRIVETIME are experimentally determined
-    public final long NINETYDEGREEDRIVETIME = 600; // at AUTOPOWER power. TODO what is NINETYDEGREEDRIVETIME
+    public final long NINETYDEGREEDRIVETIME = 600; // at AUTOPOWER power.
 
     public final String LICENSEKEY= "AdiNvu7/////AAAAGb6+m2UBfE+SodbKBmgDC7xOPWpHHVqzgv0d02rPS4AkjQ5" +
             "YFMn/0yMU50PgPc/WMaiQvY3D6b2l3vTmqA/3BeAKAWSY8yPsz4EKrMr2PA/ECG1MUOI7GnvXYGdEpXjKgDIw" +
@@ -68,8 +68,7 @@ public class HardwareOmni3_0 {
 //        FloorEye.enableLed(true);
 //        BeaconLooker.enableLed(false);
 
-        FrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //TODO do i put an idle here or something?
+        FrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER)
         FrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
@@ -106,8 +105,8 @@ public class HardwareOmni3_0 {
     }
 
     public void strafe(double power) { //moves in a right or left. positive: right, negative: left
-        FrontMotor.setPower(-power);
-        BackMotor.setPower(power);
+        FrontMotor.setPower(power);
+        BackMotor.setPower(-power);
     }
     public void spin(double power) { //turns. positive: right. negative: left. Pivot turn.
         FrontMotor.setPower(power);

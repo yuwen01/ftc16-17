@@ -32,61 +32,89 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.ftccommon.DbgLog;
+import android.support.annotation.Nullable;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.vuforia.Image;
+import com.vuforia.PIXEL_FORMAT;
+import com.vuforia.Vuforia;
+
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 /**
  * This file is a simple autonomous that launches the balls we have, then
  * pushes over the cap ball and parks on the base thing.
  */
 
-@Autonomous(name = "SensorData")  // @Autonomous(...) is the other common choice
+@Autonomous(name = "Autonomous_Shitty")  // @Autonomous(...) is the other common choice
 //@Disabled
-public class TestSensors extends LinearOpMode {
+public class Autonomous3_0Dumb extends LinearOpMode {
 
     /* Declare OpMode members. */
     // DcMotor leftMotor = null;
     // DcMotor rightMotor = null;
-    HardwareMRSensor4_0 robot = new HardwareMRSensor4_0();
-    final static boolean LOGCAT = false;
+    HardwareOmni3_0 robot = new HardwareOmni3_0();
+
+    private final double LINETHRESHOLD = 0.5;
+    private final double SLOW = 0.2;
+
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        /* eg: Initialize the hardware variables. Note that the strings used here as parameters
-         * to 'get' must correspond to the names assigned during the karel configuration
-         * step (using the FTC Robot Controller app on the phone).
-         */
+
+        VuforiaLocalizer.Parameters params = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
+        params.vuforiaLicenseKey = robot.LICENSEKEY;
+        params.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+
+
+        VuforiaLocalizer locale = ClassFactory.createVuforiaLocalizer(params);
+        locale.setFrameQueueCapacity(1);
+        Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true);
+
+
         robot.init(hardwareMap);// initialize hardware variables
         waitForStart(); // wait for play button
-        calibrateGyro();
-        while (opModeIsActive()){
-            if (LOGCAT){
-                DbgLog.msg("Floor Light: %03f", robot.FloorEye.getLightDetected());
-                DbgLog.msg("BeaconRed: %03f", robot.BeaconEye.red());
-                DbgLog.msg("Gyro: %+d", robot.Gyro.getHeading());
-            }
-            else{
-                telemetry.addData("Floor", robot.FloorEye.getLightDetected());
-                telemetry.addData("BeaconRed", robot.BeaconEye.red());
-                telemetry.addData("Gyro", robot.Gyro.getHeading());
-            }
-            updateTelemetry(telemetry);
-        }
-    }
-    public void calibrateGyro(){
-        this.robot.Gyro.calibrate();
-        double tmpTime = getRuntime();
+        telemetry.addData("Path", "Start");
+        telemetry.update();// send telemetry to DS that robot has started routine
 
-        while (opModeIsActive() && this.robot.Gyro.isCalibrating()){
-            if (tmpTime > getRuntime() + 5.0) {
-                DbgLog.msg("Calibration took too long");
-                return;
-            }
+        double tmpStart = getRuntime();//get current run time in MS
+        robot.stopDrive();
+        while (opModeIsActive() && getRuntime() < tmpStart + 10.0){
         }
-        // 5.0 is an arbitrarily long timeout value. If calibrating ends up taking longer than 5 seconds, make the number bigger.
+
+        tmpStart = getRuntime();
+        robot.strafe(robot.AUTOPOWER);
+        while (opModeIsActive() && getRuntime() < tmpStart + 53.0/12.0 * robot.ONEFOOTDRIVETIME ){
+        }
+        robot.stopDrive();
+        tmpStart = getRuntime();
+        robot.goStraight(robot.AUTOPOWER);
+        while (opModeIsActive() && getRuntime() < tmpStart + 48.0/12.0 * robot.ONEFOOTDRIVETIME){}
+
+        robot.stopDrive();
+        telemetry.addData("Path", "Done");
+        telemetry.update();// stop, tell DS the robot's don
+
     }
+    public void encoderDriveRight(double targetFeet){
+
+    }
+    @Nullable
+    public static Image getImageFromFrame(VuforiaLocalizer.CloseableFrame frame, int format) {
+
+        long numImgs = frame.getNumImages();
+        for (int i = 0; i < numImgs; i++) {
+            if (frame.getImage(i).getFormat() == format) {
+                return frame.getImage(i);
+            }//if
+        }//for
+
+        return null;
+    }
+
 }
 

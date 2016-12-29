@@ -86,7 +86,7 @@ public class HardwareOmni_1_1
         lift.setPower(0);
         launch.setPower(0);
 
-        //eye.enableLed(true);//TODO bruh which is more consistent
+        //eye.enableLed(true);
 
     }
 

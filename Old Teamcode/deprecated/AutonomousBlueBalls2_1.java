@@ -54,7 +54,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO this entire thing
  * Important: Only on blue alliance team
  * Should align robot parallel to the beacon wall close to the corner vortex
  * Move slowly along the wall, scanning for the image
@@ -108,7 +107,6 @@ public class AutonomousBlueBalls2_1 extends LinearOpMode {
         /**
          * load the targets
          * I am loading all of them, even though I'm only using the blue ones. I just don't want to make two data thing files.
-         * TODO separate the red and blue images
          */
         VuforiaTrackables imageTargets= this.vuforia.loadTrackablesFromAsset("ImageMarkers");
         VuforiaTrackable bWheels = imageTargets.get(0);

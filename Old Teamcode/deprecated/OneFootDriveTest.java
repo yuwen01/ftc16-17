@@ -32,7 +32,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.ftccommon.DbgLog;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -41,15 +40,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
  * pushes over the cap ball and parks on the base thing.
  */
 
-@Autonomous(name = "SensorData")  // @Autonomous(...) is the other common choice
+@Autonomous(name = "1pUNCH")  // @Autonomous(...) is the other common choice
 //@Disabled
-public class TestSensors extends LinearOpMode {
+public class OneFootDriveTest extends LinearOpMode {
 
     /* Declare OpMode members. */
     // DcMotor leftMotor = null;
     // DcMotor rightMotor = null;
-    HardwareMRSensor4_0 robot = new HardwareMRSensor4_0();
-    final static boolean LOGCAT = false;
+    HardwareOmni3_0 robot = new HardwareOmni3_0();
+
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
@@ -61,32 +60,18 @@ public class TestSensors extends LinearOpMode {
          */
         robot.init(hardwareMap);// initialize hardware variables
         waitForStart(); // wait for play button
-        calibrateGyro();
-        while (opModeIsActive()){
-            if (LOGCAT){
-                DbgLog.msg("Floor Light: %03f", robot.FloorEye.getLightDetected());
-                DbgLog.msg("BeaconRed: %03f", robot.BeaconEye.red());
-                DbgLog.msg("Gyro: %+d", robot.Gyro.getHeading());
-            }
-            else{
-                telemetry.addData("Floor", robot.FloorEye.getLightDetected());
-                telemetry.addData("BeaconRed", robot.BeaconEye.red());
-                telemetry.addData("Gyro", robot.Gyro.getHeading());
-            }
-            updateTelemetry(telemetry);
-        }
-    }
-    public void calibrateGyro(){
-        this.robot.Gyro.calibrate();
-        double tmpTime = getRuntime();
+        telemetry.addData("Path", "Start");
+        telemetry.update();// send telemetry to DS that robot has started routine
 
-        while (opModeIsActive() && this.robot.Gyro.isCalibrating()){
-            if (tmpTime > getRuntime() + 5.0) {
-                DbgLog.msg("Calibration took too long");
-                return;
-            }
+        double tmpStart = getRuntime();//get current run time in MS (I Think)
+        robot.goStraight(robot.AUTOPOWER);// turn on motors to go forward.
+        while (opModeIsActive() && getRuntime() < tmpStart + (robot.ONEFOOTDRIVETIME*1.0)){ //move 2.0 feet
+            telemetry.addData("Path", "1");// tell DS what stage of movement the robot's in
+            telemetry.update();
         }
-        // 5.0 is an arbitrarily long timeout value. If calibrating ends up taking longer than 5 seconds, make the number bigger.
+        robot.stopDrive();
+
+        telemetry.addData("Path", "Done");
+        telemetry.update();// stop, tell DS the robot's done
     }
 }
-

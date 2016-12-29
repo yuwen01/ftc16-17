@@ -53,7 +53,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class Test4Motor extends OpMode{
 
     /* Declare OpMode members. */
-    HardwareLegacy4_0 robot       = new HardwareLegacy4_0(); // use the class created to define a Pushbot's hardware
+    HardwareOmni_1_0 robot       = new HardwareOmni_1_0(); // use the class created to define a Pushbot's hardware
                                                          // could also use HardwarePushbotMatrix class
 
     /*

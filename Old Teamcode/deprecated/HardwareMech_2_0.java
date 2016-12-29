@@ -40,8 +40,7 @@ public class HardwareMech_2_0 {
     public double TELEPOWER = 0.5;
     public final double AUTOPOWER = 0.5;
     public final double ONEFOOTDRIVETIME = 0.96;     // THis and NINETYDEGREEDRIVETIME are experimentally determined
-    public final long NINETYDEGREEDRIVETIME = 600; // at AUTOPOWER power. TODO what is NINETYDEGREEDRIVETIME
-
+    public final long NINETYDEGREEDRIVETIME = 600; // at AUTOPOWER power.
 
     /* local OpMode members. */
     HardwareMap hwMap = null;
