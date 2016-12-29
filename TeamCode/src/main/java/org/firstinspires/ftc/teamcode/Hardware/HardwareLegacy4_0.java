@@ -1,12 +1,10 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Hardware;
 
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.LightSensor;
-import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.hardware.UltrasonicSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -20,7 +18,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  * Legacy sensors here
  */
-public class HardwareMR4_0
+public class HardwareLegacy4_0
 {
     /* Public OpMode members. */
     public DcMotor lFront = null;
@@ -29,8 +27,9 @@ public class HardwareMR4_0
     public DcMotor rBack = null;
 
     public GyroSensor Gyro = null;
-    public OpticalDistanceSensor FloorEye = null;
-    public ColorSensor BeaconEye= null;
+    public UltrasonicSensor DistanceEye = null;
+    public LightSensor FloorEye = null;
+    public LightSensor BeaconEye= null;
 
     public final double TELEPOWER = 0.6;
     public final double AUTOPOWER = 0.3;
@@ -42,7 +41,7 @@ public class HardwareMR4_0
     private ElapsedTime period  = new ElapsedTime();
 
     /* Constructor */
-    public HardwareMR4_0(){
+    public HardwareLegacy4_0(){
 
     }
 
@@ -58,8 +57,9 @@ public class HardwareMR4_0
         rBack = hwMap.dcMotor.get("rBack");    //RightMotor BackMotor
 
         Gyro = hwMap.gyroSensor.get("Gyro");
-        FloorEye = hwMap.opticalDistanceSensor.get("FloorEye");
-        BeaconEye = hwMap.colorSensor.get("BeaconEye");
+        DistanceEye = hwMap.ultrasonicSensor.get("DistanceEye");
+        FloorEye = hwMap.lightSensor.get("FloorEye");
+        BeaconEye = hwMap.lightSensor.get("BeaconEye");
 
         DcMotor[] driveMotors = {lFront, rFront, lBack, rBack};
 

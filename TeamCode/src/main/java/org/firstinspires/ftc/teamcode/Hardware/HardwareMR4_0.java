@@ -1,11 +1,13 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Hardware;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.LightSensor;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
+import com.qualcomm.robotcore.hardware.UltrasonicSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -18,9 +20,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  * Legacy sensors here
  */
-public class HardwareMRSensor4_0
+public class HardwareMR4_0
 {
     /* Public OpMode members. */
+    public DcMotor lFront = null;
+    public DcMotor rFront = null;
+    public DcMotor lBack = null;
+    public DcMotor rBack = null;
 
     public GyroSensor Gyro = null;
     public OpticalDistanceSensor FloorEye = null;
@@ -36,7 +42,7 @@ public class HardwareMRSensor4_0
     private ElapsedTime period  = new ElapsedTime();
 
     /* Constructor */
-    public HardwareMRSensor4_0(){
+    public HardwareMR4_0(){
 
     }
 
@@ -46,12 +52,27 @@ public class HardwareMRSensor4_0
         hwMap = ahwMap;
 
         // Define and Initialize Motors
+        lFront = hwMap.dcMotor.get("lFront");   //LeftMotor FrontMotor
+        rFront = hwMap.dcMotor.get("rFront");   //RightMotor FrontMotor
+        lBack = hwMap.dcMotor.get("lBack");    //LeftMotor BackMotor
+        rBack = hwMap.dcMotor.get("rBack");    //RightMotor BackMotor
 
         Gyro = hwMap.gyroSensor.get("Gyro");
         FloorEye = hwMap.opticalDistanceSensor.get("FloorEye");
         BeaconEye = hwMap.colorSensor.get("BeaconEye");
 
+        DcMotor[] driveMotors = {lFront, rFront, lBack, rBack};
+
         //Correct motor direction, set all motors to zero power, set all motors to run without encoders.
+        for(DcMotor motor : driveMotors) {
+            motor.setPower(0);
+            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+
+        rFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        rBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        lFront.setDirection(DcMotorSimple.Direction.FORWARD);
+        lBack.setDirection(DcMotorSimple.Direction.FORWARD);
 
         FloorEye.enableLed(true);
         BeaconEye.enableLed(false);
@@ -77,6 +98,33 @@ public class HardwareMRSensor4_0
         // Reset the cycle clock for the next pass.
         period.reset();
     }
-    //TODO PID straight movement with the gyro,
+    public void stopDrive() {
+        lFront.setPower(0);
+        lBack.setPower(0);
+        rFront.setPower(0);
+        rBack.setPower(0);
+
+    }
+    public void goStraight(double power) {
+        lFront.setPower(power);
+        lBack.setPower(power);
+        rFront.setPower(power);
+        rBack.setPower(power);
+    }
+    public void strafe(double power){ // positive: right, negative: left
+        lFront.setPower(-power);
+        lBack.setPower(power);
+        rFront.setPower(power);
+        rBack.setPower(-power);
+    }
+    public void spin(double power){ // positive: right, negative: left
+        lFront.setPower(power);
+        lBack.setPower(power);
+        rFront.setPower(-power);
+        rBack.setPower(-power);
+    }
+
+    //TODO PID straight movement with the gyro
+
 }
 

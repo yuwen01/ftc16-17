@@ -30,25 +30,28 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Test;
 
+import com.qualcomm.ftccommon.DbgLog;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+import org.firstinspires.ftc.teamcode.Hardware.HardwareMRSensor4_0;
 
 /**
  * This file is a simple autonomous that launches the balls we have, then
  * pushes over the cap ball and parks on the base thing.
  */
 
-@Autonomous(name = "1pUNCH")  // @Autonomous(...) is the other common choice
+@Autonomous(name = "SensorData")  // @Autonomous(...) is the other common choice
 //@Disabled
-public class OneFootDriveTest extends LinearOpMode {
+public class TestSensors extends LinearOpMode {
 
     /* Declare OpMode members. */
     // DcMotor leftMotor = null;
     // DcMotor rightMotor = null;
-    HardwareLegacy4_0 robot = new HardwareLegacy4_0();
-
+    HardwareMRSensor4_0 robot = new HardwareMRSensor4_0();
+    final static boolean LOGCAT = false;
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
@@ -60,18 +63,32 @@ public class OneFootDriveTest extends LinearOpMode {
          */
         robot.init(hardwareMap);// initialize hardware variables
         waitForStart(); // wait for play button
-        telemetry.addData("Path", "Start");
-        telemetry.update();// send telemetry to DS that robot has started routine
-
-        double tmpStart = getRuntime();//get current run time in MS (I Think)
-        robot.goStraight(robot.AUTOPOWER);// turn on motors to go forward.
-        while (opModeIsActive() && getRuntime() < tmpStart + robot.ONEFOOTDRIVETIME){
-            telemetry.addData("Path", "1");// tell DS what stage of movement the robot's in
-            telemetry.update();
+        calibrateGyro();
+        while (opModeIsActive()){
+            if (LOGCAT){
+                DbgLog.msg("Floor Light: %03f", robot.FloorEye.getLightDetected());
+                DbgLog.msg("BeaconRed: %03f", robot.BeaconEye.red());
+                DbgLog.msg("Gyro: %+d", robot.Gyro.getHeading());
+            }
+            else{
+                telemetry.addData("Floor", robot.FloorEye.getLightDetected());
+                telemetry.addData("BeaconRed", robot.BeaconEye.red());
+                telemetry.addData("Gyro", robot.Gyro.getHeading());
+            }
+            updateTelemetry(telemetry);
         }
-        robot.stopDrive();
+    }
+    public void calibrateGyro(){
+        this.robot.Gyro.calibrate();
+        double tmpTime = getRuntime();
 
-        telemetry.addData("Path", "Done");
-        telemetry.update();// stop, tell DS the robot's done
+        while (opModeIsActive() && this.robot.Gyro.isCalibrating()){
+            if (tmpTime > getRuntime() + 5.0) {
+                DbgLog.msg("Calibration took too long");
+                return;
+            }
+        }
+        // 5.0 is an arbitrarily long timeout value. If calibrating ends up taking longer than 5 seconds, make the number bigger.
     }
 }
+

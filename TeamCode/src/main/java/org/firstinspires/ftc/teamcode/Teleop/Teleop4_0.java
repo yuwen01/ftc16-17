@@ -35,10 +35,8 @@ package org.firstinspires.ftc.teamcode.Teleop;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
-import org.firstinspires.ftc.teamcode.HardwareLegacy4_0;
+import org.firstinspires.ftc.teamcode.Hardware.HardwareLegacy4_0;
 
 /**
  * Standard omni wheel teleop

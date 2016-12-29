@@ -30,34 +30,47 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Test;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Hardware.HardwareLegacy4_0;
+
 /**
- * This thingamadoohicker is pretty much just to test Teleop 2_1's control scheme without having a karel.
- * Just kinda displays the motor powers we're supposed to get based on Joystick values
+ * This file provides basic Telop driving for a Pushbot karel.
+ * The code is structured as an Iterative OpMode
  *
+ * All device access is managed through the HardwareOmni1_0 class.
+ *
+ * This particular OpMode executes a basic Omni Wheel Teleop
+ * It also opens and closes the claws slowly using the left and right Bumper buttons.
+ *
+ * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
+ * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="WeirdJoystickDyingSoon", group="Teleop")
-@Disabled
-public class TestWeirdJoystick extends OpMode{
+@TeleOp(name="Test4Motor", group="Teleop")
+//@Disabled
+public class Test4Motor extends OpMode{
 
     /* Declare OpMode members. */
+    HardwareLegacy4_0 robot       = new HardwareLegacy4_0(); // use the class created to define a Pushbot's hardware
+                                                         // could also use HardwarePushbotMatrix class
+
     /*
      * Code to run ONCE when the driver hits INIT
      */
-    double left = 0.0;
-    double right = 0.0;
     @Override
     public void init() {
+        /* Initialize the hardware variables.
+         * The init() method of the hardware class does all the work here
+         */
+        robot.init(hardwareMap);
 
         // Send telemetry message to signify karel waiting;
         telemetry.addData("Status", "Ready to Rumble");    //
-        telemetry.update();
+        updateTelemetry(telemetry);
     }
 
     /*
@@ -75,23 +88,36 @@ public class TestWeirdJoystick extends OpMode{
     }
 
     /*
-     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
+     * UP : LFRONT
+     * DOWN : LBACK
+     * RIGHT : RFRONT
+     * LEFT : RBACK
      */
     @Override
     public void loop() {
-        /*
-         so you take the forward component and do the tilty thing by subtracting the x.
-         ofc this makes it impossible to go like left = -1 and right = 1.
-         that sucks
-         but turning should naturally be slower.
-         so how bad is it?
-         im open to ideas.
-         */
-        left = gamepad1.left_stick_y - gamepad1.left_stick_x;
-        left /= -2;
-        right = gamepad1.left_stick_y + gamepad1.left_stick_x;
-        right /= -2;
-        telemetry.addLine("left: " + left + "\n right: " + right);
+        if (gamepad1.dpad_up) {
+            robot.lFront.setPower(robot.TELEPOWER);
+            telemetry.addData("Movement: ", "Forward");
+        }
+        else if (gamepad1.dpad_down) {
+            robot.lBack.setPower(robot.TELEPOWER);
+            telemetry.addData("Movement: ", "Backward");
+        }
+        else if (gamepad1.dpad_right) {
+            robot.rFront.setPower(robot.TELEPOWER);
+            telemetry.addData("Movement: ", "RightMotor");
+        }
+        else if (gamepad1.dpad_left) {
+            robot.rBack.setPower(robot.TELEPOWER);
+            telemetry.addData("Movement: ", "LeftMotor");
+        }
+        else{
+            robot.stopDrive();
+            telemetry.addData("Movement: ", "Stop");
+        }
+
+
+        // Send telemetry message to signify karel running;
 
         updateTelemetry(telemetry);
     }
@@ -101,7 +127,6 @@ public class TestWeirdJoystick extends OpMode{
      */
     @Override
     public void stop() {
-        //karel.eye.close();
     }
 
 }
