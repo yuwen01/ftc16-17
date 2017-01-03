@@ -30,56 +30,63 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.teamcode.Auto;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.teamcode.Hardware.HardwareMR4_0;
 
 /**
- * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
- * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
- * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
- * class is instantiated on the Robot Controller and executed.
- *
- * This particular OpMode just executes a basic Tank Drive Teleop for a PushBot
- * It includes all the skeletal structure that all linear OpModes contain.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
+ * This file is a simple autonomous that launches the balls we have, then
+ * pushes over the cap ball and parks on the base thing.
  */
 
-@Autonomous(name="BeaconPress_Blue")  // @Autonomous(...) is the other common choice
-//@Disabled
-public class BeaconPress extends LinearOpMode {
+@Autonomous(name = "Autonomous_Simple")  // @Autonomous(...) is the other common choice
+@Disabled
+public class Autonomous2_0 extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareMR4_0 robot = new HardwareMR4_0();
+    // DcMotor leftMotor = null;
+    // DcMotor rightMotor = null;
+    HardwareMech_2_0 robot = new HardwareMech_2_0();
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        robot.init(hardwareMap);
-        double[] powers = new double[2];
-        waitForStart();
-        double tmp = getRuntime();
-        robot.Gyro.calibrate();
-        while (opModeIsActive() && getRuntime() < tmp + 5000 && robot.Gyro.isCalibrating()) {
-            telemetry.addData("Status: ", "Calibrating Gyro");
-            telemetry.update();
-        }
 
-        // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
-            powers = robot.goStraightGyro(0.5);
-            telemetry.addData("power levels", "%2f %2f", powers[0], powers[1]);
-            telemetry.addData("Gyro reading", "%2d", robot.Gyro.getHeading()-360);
+        /* eg: Initialize the hardware variables. Note that the strings used here as parameters
+         * to 'get' must correspond to the names assigned during the karel configuration
+         * step (using the FTC Robot Controller app on the phone).
+         */
+        robot.init(hardwareMap);// initialize hardware variables
+        waitForStart(); // wait for play button
+        telemetry.addData("Path", "Start");
+        telemetry.update();// send telemetry to DS that robot has started routine
+
+        double tmpStart = getRuntime();//get current run time in MS (I Think)
+        robot.goStraight(-robot.AUTOPOWER);// turn on motors to go forward.
+        while (opModeIsActive() && getRuntime() < tmpStart + (robot.ONEFOOTDRIVETIME*2.0)){ //move 2.0 feet
+            telemetry.addData("Path", "1");// tell DS what stage of movement the robot's in
             telemetry.update();
         }
+        robot.stopDrive();
+
+        tmpStart = getRuntime();
+        robot.launch.setPower(0.4);
+        while (opModeIsActive() && getRuntime() < tmpStart + 2.5) {
+        }
+        robot.stopSpecial();
+
+        tmpStart = getRuntime();
+        robot.goStraight(-robot.AUTOPOWER);
+        while (opModeIsActive() && getRuntime() < tmpStart + robot.ONEFOOTDRIVETIME*2.0){
+        }
+        robot.stopDrive();
+
+        telemetry.addData("Path", "Done");
+        telemetry.update();// stop, tell DS the robot's done
+
+
     }
 }

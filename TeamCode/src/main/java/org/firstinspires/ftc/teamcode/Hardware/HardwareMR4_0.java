@@ -36,6 +36,8 @@ public class HardwareMR4_0
     public final double AUTOPOWER = 0.3;
     public final double ONEFOOTDRIVETIME = 1.4;
 
+    private final double KPGYRO = 1.0/180.0;
+
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -69,10 +71,10 @@ public class HardwareMR4_0
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
-        rFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        rFront.setDirection(DcMotorSimple.Direction.FORWARD);
         rBack.setDirection(DcMotorSimple.Direction.REVERSE);
-        lFront.setDirection(DcMotorSimple.Direction.FORWARD);
-        lBack.setDirection(DcMotorSimple.Direction.FORWARD);
+        lFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        lBack.setDirection(DcMotorSimple.Direction.REVERSE);
 
         FloorEye.enableLed(true);
         BeaconEye.enableLed(false);
@@ -112,19 +114,40 @@ public class HardwareMR4_0
         rBack.setPower(power);
     }
     public void strafe(double power){ // positive: right, negative: left
-        lFront.setPower(-power);
-        lBack.setPower(power);
-        rFront.setPower(power);
-        rBack.setPower(-power);
+        lFront.setPower(power);
+        lBack.setPower(-power);
+        rFront.setPower(-power);
+        rBack.setPower(power);
     }
     public void spin(double power){ // positive: right, negative: left
-        lFront.setPower(power);
-        lBack.setPower(power);
-        rFront.setPower(-power);
-        rBack.setPower(-power);
+        lFront.setPower(-power);
+        lBack.setPower(-power);
+        rFront.setPower(power);
+        rBack.setPower(power);
     }
 
     //TODO PID straight movement with the gyro
+    //RN just tryna use proportional drive, but may or may not integrate some dumbshit later
+    //always calibrate gyro first
+    public double[] goStraightGyro(double power){ //use raw heading values?\
+        double[] sidePowers = new double[2];
+        int currentHeading = this.Gyro.getHeading();
+        if (this.Gyro.getHeading() > 180)// turn gyro heading from 0 to 360 to -180 to 180
+            currentHeading -= 360;
 
+        sidePowers[0] = power + ((1.0-power) * (currentHeading)/180.0);
+        sidePowers[1] = power - ((1.0-power) * (currentHeading)/180.0);
+        lFront.setPower(sidePowers[0]);
+        lBack.setPower(sidePowers[0]);
+        rFront.setPower(sidePowers[1]);
+        rBack.setPower(sidePowers[1]);
+//        if (currentHeading < 0) {
+//            lFront.setPower(power - 0.1);
+//            lBack.setPower(power - 0.1);
+//            rFront.setPower(power + 0.1);
+//            rBack.setPower(power + 0.1);
+//        }
+        return sidePowers;
+    }
 }
 

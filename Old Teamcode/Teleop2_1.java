@@ -30,35 +30,27 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.teamcode.Test;
+package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Hardware.HardwareLegacy4_0;
-import org.firstinspires.ftc.teamcode.Hardware.HardwareMR4_0;
-
 /**
- * This file provides basic Telop driving for a Pushbot karel.
- * The code is structured as an Iterative OpMode
- *
- * All device access is managed through the HardwareOmni1_0 class.
- *
- * This particular OpMode executes a basic Omni Wheel Teleop
- * It also opens and closes the claws slowly using the left and right Bumper buttons.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
+ * Okey dokey kiddos this ones a doozy
+ * So this one only uses the left joystick.
+ * kinda tilt it to the right or left to tilty turn thataway
+ * o yeah we're using HardwareMech_2_0
  */
 
-@TeleOp(name="Test4Motor", group="Teleop")
-//@Disabled
-public class Test4Motor extends OpMode{
+@TeleOp(name="Teleop2_1", group="Teleop")
+@Disabled
+public class Teleop2_1 extends OpMode{
 
     /* Declare OpMode members. */
-    HardwareMR4_0 robot       = new HardwareMR4_0(); // use the class created to define a Pushbot's hardware
+    HardwareMech_2_0 karel = new HardwareMech_2_0(); // use the hardware file bc it's radical
                                                          // could also use HardwarePushbotMatrix class
-
+    private final double xFactor = 0.3; //this controls how sensitive turning is.
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -67,11 +59,11 @@ public class Test4Motor extends OpMode{
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
-        robot.init(hardwareMap);
+        karel.init(hardwareMap);
 
         // Send telemetry message to signify karel waiting;
         telemetry.addData("Status", "Ready to Rumble");    //
-        updateTelemetry(telemetry);
+        telemetry.update();
     }
 
     /*
@@ -89,34 +81,38 @@ public class Test4Motor extends OpMode{
     }
 
     /*
-     * UP : LFRONT
-     * DOWN : LBACK
-     * RIGHT : RFRONT
-     * LEFT : RBACK
+     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
     @Override
     public void loop() {
-        if (gamepad1.dpad_up) {
-            robot.lFront.setPower(robot.TELEPOWER);
-            telemetry.addData("Movement: ", "Forward");
-        }
-        else if (gamepad1.dpad_down) {
-            robot.lBack.setPower(robot.TELEPOWER);
-            telemetry.addData("Movement: ", "Backward");
-        }
-        else if (gamepad1.dpad_right) {
-            robot.rFront.setPower(robot.TELEPOWER);
-            telemetry.addData("Movement: ", "RightMotor");
-        }
-        else if (gamepad1.dpad_left) {
-            robot.rBack.setPower(robot.TELEPOWER);
-            telemetry.addData("Movement: ", "LeftMotor");
-        }
-        else{
-            robot.stopDrive();
-            telemetry.addData("Movement: ", "Stop");
-        }
+        /*
+         so you take the forward component and do the tilty thing by subtracting the x.
+         ofc this makes it impossible to go like left = -1 and right = 1.
+         that sucks
+         but turning should naturally be slower.
+         so how bad is it?
+         im open to ideas.
+         */
+        double left = gamepad1.left_stick_y - gamepad1.left_stick_x;
+        left /= -2;
+        double right = gamepad1.left_stick_y + gamepad1.left_stick_x;
+        right /= -2;
+        telemetry.addLine("left: " + left + "\nright: " + right);
 
+        karel.lBack.setPower(left);
+        karel.lFront.setPower(left);
+        karel.rBack.setPower(right);
+        karel.rFront.setPower(right);
+        if (gamepad2.a) // if a, then turn on the launchy thing
+            karel.launch.setPower(0.7);
+        else
+            karel.launch.setPower(0.0); //otherwise, stop launch thing
+        if  (gamepad2.x)
+            karel.lift.setPower(1.0);
+        else if (gamepad2.y)
+            karel.lift.setPower(-1.0);
+        else
+            karel.lift.setPower(0.0);
 
         // Send telemetry message to signify karel running;
 
@@ -128,6 +124,7 @@ public class Test4Motor extends OpMode{
      */
     @Override
     public void stop() {
+        //karel.eye.close();
     }
 
 }

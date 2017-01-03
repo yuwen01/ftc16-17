@@ -30,13 +30,11 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.teamcode.Test;
+package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
-import org.firstinspires.ftc.teamcode.Hardware.HardwareLegacy4_0;
-import org.firstinspires.ftc.teamcode.Hardware.HardwareMR4_0;
 
 /**
  * This file provides basic Telop driving for a Pushbot karel.
@@ -51,14 +49,18 @@ import org.firstinspires.ftc.teamcode.Hardware.HardwareMR4_0;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Test4Motor", group="Teleop")
-//@Disabled
-public class Test4Motor extends OpMode{
+@TeleOp(name="Teleop1_1", group="Teleop")
+@Disabled
+public class Teleop1_1 extends OpMode{
 
     /* Declare OpMode members. */
-    HardwareMR4_0 robot       = new HardwareMR4_0(); // use the class created to define a Pushbot's hardware
+    HardwareOmni_1_1 robot       = new HardwareOmni_1_1(); // use the class created to define a Pushbot's hardware
                                                          // could also use HardwarePushbotMatrix class
+    public final double JOYTHRESHOLDY = 0.4;
+    public final double JOYTHRESHOLDX = 0.4;
 
+    public double JoydriveX;
+    public double JoydriveY;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -89,36 +91,59 @@ public class Test4Motor extends OpMode{
     }
 
     /*
-     * UP : LFRONT
-     * DOWN : LBACK
-     * RIGHT : RFRONT
-     * LEFT : RBACK
+     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
     @Override
     public void loop() {
-        if (gamepad1.dpad_up) {
-            robot.lFront.setPower(robot.TELEPOWER);
+        if (gamepad1.dpad_up) { // when up on dpad is pressed, go forward
+            robot.goLeft(robot.TELEPOWER);
             telemetry.addData("Movement: ", "Forward");
         }
-        else if (gamepad1.dpad_down) {
-            robot.lBack.setPower(robot.TELEPOWER);
+        else if (gamepad1.dpad_down) { //when down on dpad is pressed, go backward
+            robot.goRight(robot.TELEPOWER);
             telemetry.addData("Movement: ", "Backward");
         }
-        else if (gamepad1.dpad_right) {
-            robot.rFront.setPower(robot.TELEPOWER);
+        else if (gamepad1.dpad_right) { // when right on dpad is pressed, go right
+            robot.goForward(robot.TELEPOWER);
             telemetry.addData("Movement: ", "RightMotor");
         }
-        else if (gamepad1.dpad_left) {
-            robot.rBack.setPower(robot.TELEPOWER);
+        else if (gamepad1.dpad_left) { // when left on dpad is pressed, go left
+            robot.goBackward(robot.TELEPOWER);
             telemetry.addData("Movement: ", "LeftMotor");
         }
-        else{
+        else if (gamepad1.left_bumper) { // when lbumper on dpad is pressed, spin left
+            robot.spinLeft(robot.TELEPOWER);
+            telemetry.addData("Movement: ", "CCL");
+        }
+        else if (gamepad1.right_bumper) { // when rbumper on dpad is pressed, spin right
+            robot.spinRight(robot.TELEPOWER);
+            telemetry.addData("Movement: ", "CC");
+        }
+        else{ //otherwise stop moving around!
             robot.stopDrive();
             telemetry.addData("Movement: ", "Stop");
         }
-
+        if (gamepad1.a){
+            robot.TELEPOWER -= 0.2;
+        }
+        else if (gamepad1.b){
+            robot.TELEPOWER += 0.2;
+        }
+        if (gamepad2.a) // if a, then turn on the launchy thing
+            robot.launch.setPower(0.4);
+        else
+            robot.launch.setPower(0.0); //otherwise, stop launch thing
+        if  (gamepad2.x)
+            robot.lift.setPower(0.2);
+        else if (gamepad2.y)
+            robot.lift.setPower(-0.2);
+        else
+            robot.lift.setPower(0.0);
 
         // Send telemetry message to signify karel running;
+
+        updateTelemetry(telemetry);
+        // Send telemetry message t signify karel running;
 
         updateTelemetry(telemetry);
     }

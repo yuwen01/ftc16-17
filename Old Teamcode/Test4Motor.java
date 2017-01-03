@@ -30,13 +30,10 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.teamcode.Test;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
-import org.firstinspires.ftc.teamcode.Hardware.HardwareLegacy4_0;
-import org.firstinspires.ftc.teamcode.Hardware.HardwareMR4_0;
 
 /**
  * This file provides basic Telop driving for a Pushbot karel.
@@ -56,7 +53,7 @@ import org.firstinspires.ftc.teamcode.Hardware.HardwareMR4_0;
 public class Test4Motor extends OpMode{
 
     /* Declare OpMode members. */
-    HardwareMR4_0 robot       = new HardwareMR4_0(); // use the class created to define a Pushbot's hardware
+    HardwareOmni_1_0 robot       = new HardwareOmni_1_0(); // use the class created to define a Pushbot's hardware
                                                          // could also use HardwarePushbotMatrix class
 
     /*

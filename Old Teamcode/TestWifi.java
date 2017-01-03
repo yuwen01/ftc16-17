@@ -30,13 +30,10 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.teamcode.Test;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
-import org.firstinspires.ftc.teamcode.Hardware.HardwareLegacy4_0;
-import org.firstinspires.ftc.teamcode.Hardware.HardwareMR4_0;
 
 /**
  * This file provides basic Telop driving for a Pushbot karel.
@@ -51,13 +48,10 @@ import org.firstinspires.ftc.teamcode.Hardware.HardwareMR4_0;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Test4Motor", group="Teleop")
+@TeleOp(name="Wifi Test", group="Test")
 //@Disabled
-public class Test4Motor extends OpMode{
+public class TestWifi extends OpMode{
 
-    /* Declare OpMode members. */
-    HardwareMR4_0 robot       = new HardwareMR4_0(); // use the class created to define a Pushbot's hardware
-                                                         // could also use HardwarePushbotMatrix class
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -67,10 +61,9 @@ public class Test4Motor extends OpMode{
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
-        robot.init(hardwareMap);
 
         // Send telemetry message to signify karel waiting;
-        telemetry.addData("Status", "Ready to Rumble");    //
+        telemetry.addData("Say", "Hello Driver");    //
         updateTelemetry(telemetry);
     }
 
@@ -89,31 +82,36 @@ public class Test4Motor extends OpMode{
     }
 
     /*
-     * UP : LFRONT
-     * DOWN : LBACK
-     * RIGHT : RFRONT
-     * LEFT : RBACK
+     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
     @Override
     public void loop() {
         if (gamepad1.dpad_up) {
-            robot.lFront.setPower(robot.TELEPOWER);
+            //karel.goForward(karel.TELEPOWER);
             telemetry.addData("Movement: ", "Forward");
         }
         else if (gamepad1.dpad_down) {
-            robot.lBack.setPower(robot.TELEPOWER);
+
             telemetry.addData("Movement: ", "Backward");
         }
         else if (gamepad1.dpad_right) {
-            robot.rFront.setPower(robot.TELEPOWER);
+
             telemetry.addData("Movement: ", "RightMotor");
         }
         else if (gamepad1.dpad_left) {
-            robot.rBack.setPower(robot.TELEPOWER);
+
             telemetry.addData("Movement: ", "LeftMotor");
         }
+        else if (gamepad1.left_bumper) {
+
+            telemetry.addData("Movement: ", "CCL");
+        }
+        else if (gamepad1.right_bumper) {
+
+            telemetry.addData("Movement: ", "CC");
+        }
         else{
-            robot.stopDrive();
+
             telemetry.addData("Movement: ", "Stop");
         }
 

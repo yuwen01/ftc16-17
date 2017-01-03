@@ -30,15 +30,12 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.teamcode.Auto;
+package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.teamcode.Hardware.HardwareMR4_0;
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -53,33 +50,51 @@ import org.firstinspires.ftc.teamcode.Hardware.HardwareMR4_0;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="BeaconPress_Blue")  // @Autonomous(...) is the other common choice
+@TeleOp(name="1Motor", group="Test")  // @Autonomous(...) is the other common choice
 //@Disabled
-public class BeaconPress extends LinearOpMode {
+public class TestMotor extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareMR4_0 robot = new HardwareMR4_0();
+    private ElapsedTime runtime = new ElapsedTime();
+    private Hardware1Motor robot = new Hardware1Motor();
+    // DcMotor leftMotor = null;
+    // DcMotor rightMotor = null;
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         robot.init(hardwareMap);
-        double[] powers = new double[2];
+        /* eg: Initialize the hardware variables. Note that the strings used here as parameters
+         * to 'get' must correspond to the names assigned during the karel configuration
+         * step (using the FTC Robot Controller app on the phone).
+         */
+        // leftMotor  = hardwareMap.dcMotor.get("left motor");
+        // rightMotor = hardwareMap.dcMotor.get("right motor");
+
+        // eg: Set the drive motor directions:
+        // "Reverse" the motor that runs backwards when connected directly to the battery
+        // leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        // rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+
+        // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        double tmp = getRuntime();
-        robot.Gyro.calibrate();
-        while (opModeIsActive() && getRuntime() < tmp + 5000 && robot.Gyro.isCalibrating()) {
-            telemetry.addData("Status: ", "Calibrating Gyro");
-            telemetry.update();
-        }
+        runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            powers = robot.goStraightGyro(0.5);
-            telemetry.addData("power levels", "%2f %2f", powers[0], powers[1]);
-            telemetry.addData("Gyro reading", "%2d", robot.Gyro.getHeading()-360);
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
+
+            // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
+            // leftMotor.setPower(-gamepad1.left_stick_y);
+            // rightMotor.setPower(-gamepad1.right_stick_y);
+            robot.go.setPower(1.0);
+
+
+            //telemetry.addData("what", "this is dumb");
+
+            idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
         }
     }
 }

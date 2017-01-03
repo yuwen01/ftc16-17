@@ -30,56 +30,50 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.teamcode.Auto;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.teamcode.Hardware.HardwareMR4_0;
 
 /**
- * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
- * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
- * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
- * class is instantiated on the Robot Controller and executed.
- *
- * This particular OpMode just executes a basic Tank Drive Teleop for a PushBot
- * It includes all the skeletal structure that all linear OpModes contain.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
+ * This file is a simple autonomous that launches the balls we have, then
+ * pushes over the cap ball and parks on the base thing.
  */
 
-@Autonomous(name="BeaconPress_Blue")  // @Autonomous(...) is the other common choice
+@Autonomous(name = "SensorData")  // @Autonomous(...) is the other common choice
 //@Disabled
-public class BeaconPress extends LinearOpMode {
+public class TestSensors extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareMR4_0 robot = new HardwareMR4_0();
+    // DcMotor leftMotor = null;
+    // DcMotor rightMotor = null;
+    HardwareOmni3_0 robot = new HardwareOmni3_0();
+
+    private final double LINETHRESHOLD = 0.5;
+    private final double SLOW = 0.2;
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        robot.init(hardwareMap);
-        double[] powers = new double[2];
-        waitForStart();
-        double tmp = getRuntime();
-        robot.Gyro.calibrate();
-        while (opModeIsActive() && getRuntime() < tmp + 5000 && robot.Gyro.isCalibrating()) {
-            telemetry.addData("Status: ", "Calibrating Gyro");
-            telemetry.update();
-        }
 
-        // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
-            powers = robot.goStraightGyro(0.5);
-            telemetry.addData("power levels", "%2f %2f", powers[0], powers[1]);
-            telemetry.addData("Gyro reading", "%2d", robot.Gyro.getHeading()-360);
-            telemetry.update();
+        /* eg: Initialize the hardware variables. Note that the strings used here as parameters
+         * to 'get' must correspond to the names assigned during the karel configuration
+         * step (using the FTC Robot Controller app on the phone).
+         */
+        robot.init(hardwareMap);// initialize hardware variables
+        waitForStart(); // wait for play button
+        while (opModeIsActive()){
+            telemetry.addData("Floor", robot.FloorEye.getLightDetected());
+            telemetry.addData("Distance", robot.DistanceLooker.getUltrasonicLevel());
+            telemetry.addData("Beacon", robot.BeaconLooker.getLightDetected());
+            updateTelemetry(telemetry);
+
         }
     }
+    public void encoderDriveRight(double targetFeet){
+
+    }
+
 }
+

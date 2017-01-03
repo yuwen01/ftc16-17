@@ -30,15 +30,12 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.teamcode.Auto;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.teamcode.Hardware.HardwareMR4_0;
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -53,33 +50,54 @@ import org.firstinspires.ftc.teamcode.Hardware.HardwareMR4_0;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="BeaconPress_Blue")  // @Autonomous(...) is the other common choice
-//@Disabled
-public class BeaconPress extends LinearOpMode {
+@Autonomous(name="AutonomousBlueBalls11", group="Autonomous")  // @Autonomous(...) is the other common choice
+@Disabled
+public class AutonomousBlueBalls1_1 extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareMR4_0 robot = new HardwareMR4_0();
-
+    private ElapsedTime runtime = new ElapsedTime();
+    // DcMotor leftMotor = null;
+    // DcMotor rightMotor = null;
+    HardwareOmni_1_1 robot = new HardwareOmni_1_1();
+    private final double TIME1 = 2.0;
+    private final double TIME2 = 2.0;
+    private final double TIME3 = 2.0;
+    private final double WHITE = 0.6;
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
+
+        /* eg: Initialize the hardware variables. Note that the strings used here as parameters
+         * to 'get' must correspond to the names assigned during the karel configuration
+         * step (using the FTC Robot Controller app on the phone).
+         */
         robot.init(hardwareMap);
-        double[] powers = new double[2];
         waitForStart();
-        double tmp = getRuntime();
-        robot.Gyro.calibrate();
-        while (opModeIsActive() && getRuntime() < tmp + 5000 && robot.Gyro.isCalibrating()) {
-            telemetry.addData("Status: ", "Calibrating Gyro");
-            telemetry.update();
-        }
+        runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            powers = robot.goStraightGyro(0.5);
-            telemetry.addData("power levels", "%2f %2f", powers[0], powers[1]);
-            telemetry.addData("Gyro reading", "%2d", robot.Gyro.getHeading()-360);
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+
             telemetry.update();
+            robot.goForward(robot.AUTOPOWER);
+//            while (karel.eye.getLightDetected() < WHITE){
+//                telemetry.addData("Light", karel.eye.getLightDetected());
+//                telemetry.update();
+//            }
+
+            robot.stopDrive();
+
+            robot.goRight(robot.AUTOPOWER, TIME1);
+
+
+
+            // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
+            // leftMotor.setPower(-gamepad1.left_stick_y);
+            // rightMotor.setPower(-gamepad1.right_stick_y);
+
+            idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
         }
     }
 }

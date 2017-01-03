@@ -16,7 +16,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * //TODO Exactly what kind of operation are we running here?
  * //TODO Find what kind of values the sensors return, gyro in particular
  *
- * Legacy sensors here
  */
 public class HardwareMRSensor4_0
 {
